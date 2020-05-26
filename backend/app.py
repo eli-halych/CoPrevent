@@ -43,9 +43,7 @@ def create_app():
 
         response_data = {}
 
-        try:
-            requested_data = request.data
-        except Exception as e:
+        if not request.data:
             abort(400)  # bad request
 
         try:

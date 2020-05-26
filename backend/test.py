@@ -30,6 +30,13 @@ class TestCase(unittest.TestCase):
         self.assertTrue(data['success'])
 
     def test_post_survey(self):
+        # bad request call
+        res = self.client().post('/survey')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['name'], 'Bad Request')
+
+        # successful call
         # TODO fill out when known
         request_data = json.dumps({
             'country_region_code': None,
