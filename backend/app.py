@@ -5,35 +5,6 @@ from werkzeug.exceptions import HTTPException
 def create_app():
     app = Flask(__name__)
 
-    @app.route('/', methods=['GET'])
-    def get_map():
-        """
-            Show a map
-            :return: TODO Folium?
-        """
-
-        tmp_string = "A map is here"
-        response_body = {
-            'data': tmp_string,
-            'success': True
-        }
-        return jsonify(response_body)
-
-    @app.route('/survey', methods=['GET'])
-    def get_survey():
-        """
-            # TODO remove or keep? Do we need GET form? Can frontend do this?
-            Show a survey form
-            :return: TODO
-        """
-
-        tmp_string = "Survey form is here"
-        response_body = {
-            'data': tmp_string,
-            'success': True
-        }
-        return jsonify(response_body)
-
     @app.route('/survey', methods=['POST'])
     def post_survey():
         """

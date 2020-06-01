@@ -13,22 +13,6 @@ class TestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_get_map(self):
-        res = self.client().get('/')
-        data = json.loads(res.data)
-
-        self.assertEqual(data['data'], 'A map is here')
-        self.assertEqual(res.status_code, 200)
-        self.assertTrue(data['success'])
-
-    def test_get_survey(self):
-        res = self.client().get('/survey')
-        data = json.loads(res.data)
-
-        self.assertEqual(data['data'], 'Survey form is here')
-        self.assertEqual(res.status_code, 200)
-        self.assertTrue(data['success'])
-
     def test_post_survey(self):
         # bad request call
         res = self.client().post('/survey')
@@ -54,6 +38,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['message'], '')
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
+
 
 if __name__ == '__main__':
     unittest.main()
