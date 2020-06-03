@@ -8,6 +8,7 @@ def create_app():
     @app.route('/')
     def present():
         tmp_string = "A map is here"
+        # TODO serve map: html, js, css
         return tmp_string
 
     return app
