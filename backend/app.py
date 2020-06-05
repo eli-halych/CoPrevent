@@ -1,15 +1,19 @@
-from flask import Flask, redirect
+import os
 
+from flask import Flask, render_template
+
+template_dir = os.path.abspath('frontend/templates')
+static_dir = os.path.abspath('frontend/static')
 
 def create_app():
 
-    app = Flask(__name__)
+    app = Flask(__name__,
+                template_folder=template_dir,
+                static_folder=static_dir)
 
     @app.route('/')
     def present():
-        tmp_string = "A map is here"
-        # TODO serve map: html, js, css
-        return tmp_string
+        return render_template("world.html")
 
     return app
 
