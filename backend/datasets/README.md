@@ -32,7 +32,7 @@ _Source_: https://www.google.com/covid19/mobility/
 
 
 
-### IHME COVID-19 cases/deaths dataset
+### IHME COVID-19 cases/deaths dataset (NOT USED for predictions yet)
 _View_: [`summary_stats_all_locs.csv`](summary_stats_all_locs.csv)
 
 _Description_: <br>
