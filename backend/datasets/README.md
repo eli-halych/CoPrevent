@@ -1,0 +1,60 @@
+## Data
+
+Countries are labeled by the **ISO 3166-1 alpha-2**. <br>
+
+**Remember!** All countries should be identified by these codes for better integrity 
+within the project. <br>
+
+_Examples_:
+
+| Country name          | Country code|
+| ----------------------| ----------- |
+| United Arab Emirates  | AE          |
+| Bulgaria              | BG          |
+| ...                   |             |
+
+_Full country list_: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 <br>
+
+
+[iso_3_codes_alpha_2]: https://gist.githubusercontent.com/eli-halych/908ca870a39bbbf0348f253ec7b0270e/raw/a39d2369830dc823495b2d50a1c61297e963aed5/iso-3-countries-alpha-2.png "ISO 3166-1 alpha-2"
+
+
+
+### Global mobility report
+_View_: [`global_mobility_report.csv`](global_mobility_report.csv)
+
+_Description_: <br>
+The reports chart movement trends over time by geography, across different 
+categories of places such as retail and recreation, groceries and pharmacies, 
+parks, transit stations, workplaces, and residential.
+ 
+_Source_: https://www.google.com/covid19/mobility/
+
+
+
+### IHME COVID-19 cases/deaths dataset
+_View_: [`summary_stats_all_locs.csv`](summary_stats_all_locs.csv)
+
+_Description_: <br>
+IHME has produced forecasts which show hospital bed use, need for intensive care beds, and
+ventilator use due to COVID-19 based on projected deaths for the United States, at the country and
+subnational level, and countries in the European Economic Area (EEA). Forecasts at the subnational
+level are included for three EEA countries: Germany, Italy, and Spain. These projections are produced
+by models based on observed death rates from COVID-19, and include uncertainty intervals. 
+
+_Source_: http://www.healthdata.org/covid/data-downloads
+
+
+
+### WHO Coronavirus Disease (COVID-19) dataset
+
+_View_: [`who_cases_deaths.csv`](who_cases_deaths.csv)
+
+_Description_: <br>
+Shows new cases and deaths grouped by date, country and sub regions.
+Also contains cumulative number of cases and deaths grouped by date, country 
+and sub regions.
+
+_Source_: https://data.humdata.org/dataset/coronavirus-covid-19-cases-and-deaths
+
+
