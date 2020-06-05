@@ -16,7 +16,7 @@ _Examples_:
 _Full country list_: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 <br>
 
 
-[iso_3_codes_alpha_2]: https://gist.githubusercontent.com/eli-halych/908ca870a39bbbf0348f253ec7b0270e/raw/a39d2369830dc823495b2d50a1c61297e963aed5/iso-3-countries-alpha-2.png "ISO 3166-1 alpha-2"
+![iso_3_codes_alpha_2](https://gist.githubusercontent.com/eli-halych/908ca870a39bbbf0348f253ec7b0270e/raw/a39d2369830dc823495b2d50a1c61297e963aed5/iso-3-countries-alpha-2.png) 
 
 
 
