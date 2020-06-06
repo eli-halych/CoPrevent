@@ -1,7 +1,6 @@
 body {
   background-color: #FAFAFA;
   background-repeat: no-repeat;
-
 }
 
 .BGimage {
@@ -21,20 +20,20 @@ body {
 }
 
 .titleImg {
-  margin-left: 40%;
-  margin-right: auto;
-  width: 20%;
-  height: 20%;
-  margin-top: -1030px;
-  /* border: 1px blueviolet solid; */
-  position: absolute;
+  display: block;
+  margin: 0 auto;
+  width: 280px;
+  margin-top: -30px;
+  margin-top: -150px;
 }
 
 .teamLogo {
   width: 115px;
-  margin-top: -1100px;
-  margin-left: 50px;
+  margin-top: -1090px;
+  float: left;
+  margin-left: 10px;
   position: absolute;
+  background-repeat: no-repeat;
 }
 
 #vmap {
@@ -63,28 +62,24 @@ body {
   margin-top: -880px;
   margin-left: 42%;
   text-align: center;
-  line-height: 0.42cm;
+  /* line-height: 0.42cm; */
   position: absolute;
 }
 
 .titleWeeklyActivities {
-  margin-left: 40%;
-  margin-right: auto;
-  width: 20%;
-  height: 20%;
-
+  display: block;
+  margin: 0 auto;
+  width: 280px;
 }
 
 .instruction2 {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: lighter;
   font-size: xx-small;
-  margin-left: 40%;
-  /* margin-right: auto; */
-  margin-top: -5px;
+  display: block;
+  margin: 0 auto;
   text-align: center;
-  line-height: 0.42cm;
-  position: absolute;
+  /* line-height: 0.42cm; */
 }
 
 .step2Box {
@@ -111,15 +106,13 @@ body {
 }
 
 .weeklyActivitySurvey {
-  width: 51%;
+  width: 50%;
   margin-right: -8px;
   height: 550px;
   float: right;
   /* background-color: #F4F4F4; */
   background-color: white;
-  /* border: 1px navy solid; */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  /* position: absolute; */
 }
 
 .weeklyActivitySurvey h3 {
@@ -151,6 +144,7 @@ body {
   border: 1px #4E9ABC none;
   font-size: 20px;
   background-color: #4E9ABC;
+  /* position: absolute; */
 }
 
 /* a {
