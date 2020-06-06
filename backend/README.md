@@ -26,11 +26,9 @@ DESCRIPTION:
     returns prediction/insight information based on request data.
 REQUEST BODY: 
     {
-      'country_region_code': ?,
-      'country_region': ?,
-      'sub_region_1': ?,
-      'sub_region_2': ?,
-      'date': ?
+      'country_region_code': 'US',
+      'start_date': '2020-03-01',
+      'end_date': '2020-05-01'
     }
 RETURNS: 
     personalized prediction, 
