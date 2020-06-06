@@ -78,8 +78,9 @@ that happen on Mon-Fri. Which makes sense since it take a few days for corona vi
 to develop inside of a human body.
 
 
-_Criteria_: <br>
-Country (code): US <br>
+_Technical details_: <br>
+_Country (code)_: US <br>
+_Normalization_: MinMaxScaler -> 0..1 <br> 
 Dates: 2020-03-01 to 2020-05-01 <br>
 ![us-lockdown-start](https://gist.githubusercontent.com/eli-halych/908ca870a39bbbf0348f253ec7b0270e/raw/9fb2a3e1fc3c452066ce7d45bbcfc96e08880c4f/US-lockdown-start-date.png) 
 
