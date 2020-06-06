@@ -21,15 +21,22 @@ body {
 
 .titleImg {
   display: block;
-  margin: 0 auto;
+  /* margin: -1030px auto; */
   width: 280px;
-  margin-top: -30px;
-  margin-top: -150px;
+  /* margin-top: -30px; */
+  /* margin-top: -1030px; */
+  margin: 0 auto;
+  /* margin-top: -100px; */
+  top: -1000px;
+  /* float: right; */
+  position: relative;
 }
 
 .teamLogo {
   width: 115px;
-  margin-top: -1090px;
+  top: 30px;
+  /* margin-top: -1100px; */
+  /* margin-top: -1240px; */
   float: left;
   margin-left: 10px;
   position: absolute;
@@ -52,14 +59,15 @@ body {
   font-weight: bolder;
   margin-top: -450px;
   margin-left: 3%;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .instruction1 {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: lighter;
   font-size: xx-small;
-  margin-top: -880px;
+  top: 250px;
+  /* margin-top: -880px; */
   margin-left: 42%;
   text-align: center;
   /* line-height: 0.42cm; */
