@@ -30,8 +30,7 @@ REQUEST BODY:
       'country_region': ?,
       'sub_region_1': ?,
       'sub_region_2': ?,
-      'date': ?,
-      'still_on_lockdown': True/False
+      'date': ?
     }
 RETURNS: 
     personalized prediction, 
