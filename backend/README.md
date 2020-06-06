@@ -14,32 +14,13 @@
 
 ### Endpoints
 ```
-1. GET '/'
-2. GET '/survey'
-3. POST '/survey'
+1. POST '/survey'
 ```
 
 ##### Endpoint description
-```
-1. GET '/'
-DESCRIPTION:
-    shows a world map with severail regions.
-RETURNS: 
-    a map? Folium?
-```
 
 ```
-2. GET '/survey'
-DESCRIPTION:
-    calls for a survey form. Is it necessary?
-RETURNS: 
-    a survey form? 
-NOTES: 
-    may be removed due to its potential unnecessity. Can be done with frontend?
-```
-
-```
-3. POST '/survey'
+1. POST '/survey'
 DESCRIPTION: 
     calls an ML model,
     returns prediction/insight information based on request data.
