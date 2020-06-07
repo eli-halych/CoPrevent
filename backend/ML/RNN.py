@@ -11,13 +11,13 @@ from backend.ML.utils import load_data, preprocess, filter_by_country, \
 
 
 class RNN:
-    def __init__(self, country_code, look_back=3, look_forward=3):
+    def __init__(self, country_code, look_forward=3):
         """
         """
         if not country_code:
             abort(422)
 
-        self.look_back = look_back
+        self.look_back = look_forward
         self.look_forward = look_forward
         self.country_code = country_code
         self.models_src = 'models_countries'
