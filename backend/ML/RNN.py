@@ -7,7 +7,7 @@ from werkzeug.exceptions import abort
 # TODO save dependencies to requirements.txt
 # TODO update docstrings
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
-    separate, normalize, apply_lookback, reshape
+    separate, normalize, apply_lookback, reshape, unite_dates_samples
 
 
 class RNN:
@@ -41,8 +41,8 @@ class RNN:
         X, _ = apply_lookback(Y, look_back=1)
         # reshape to fit the model
         X = reshape(X)
-        # TODO unite with dates, consider look_back
-        united = None
+        # unite with dates, consider look_back
+        united_samples = unite_dates_samples(dates, X)
 
         last_day = day
         predicted = 0

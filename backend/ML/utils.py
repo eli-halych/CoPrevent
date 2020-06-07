@@ -72,3 +72,11 @@ def apply_lookback(dataset, look_back=1):
 
 def reshape(X):
     return np.reshape(X, (X.shape[0], 1, X.shape[1]))
+
+
+def unite_dates_samples(dates, samples):
+    """
+        Unites dates to make predictions for with samples
+        :return: united
+    """
+    return np.hstack((dates, samples))
