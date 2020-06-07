@@ -9,6 +9,7 @@ from backend.ML.RNN import RNN
 def create_app():
     app = Flask(__name__)
 
+    # TODO tests
     @app.route('/survey', methods=['POST'])
     def post_survey():
         """
