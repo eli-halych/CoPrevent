@@ -27,8 +27,7 @@ DESCRIPTION:
 REQUEST BODY: 
     {
       'country_region_code': 'US',
-      'start_date': '2020-03-01',
-      'end_date': '2020-05-01'
+      'days': 3
     }
 RETURNS: 
     personalized prediction, 
