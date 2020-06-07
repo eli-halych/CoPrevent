@@ -1,100 +1,74 @@
-import numpy
-import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+import time
 import math
-from pandas import read_csv
+import datetime as dt
+from matplotlib import pyplot as plt
+
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
 
-scaler = MinMaxScaler(feature_range=(0, 1))
-numpy.random.seed(7)
+COLNAMES = ['ISO_2_CODE', 'ADM0_NAME', 'date_epicrv',
+            'NewCase', 'CumCase', 'NewDeath',
+            'CumDeath']
+NEW_COLUMN_NAMES = ['country_region_code', 'country_region', 'date',
+                    'new_cases', 'cum_cases', 'new_deaths', 'cum_deaths']
+DATASET_DIR = '../datasets/'
+FILENAME = 'who_cases_deaths.csv'
+
+np.random.seed(7)
+SCALER = MinMaxScaler(feature_range=(0, 1))
 
 
-def look_back_dataset(dataset, look_back=1):
-    """
-      :param: dataset, look_back
-      :return: trainX, trainY OR testX, testY
-    """
+def load_data():
+    return pd.read_csv(f'{DATASET_DIR}/{FILENAME}', usecols=COLNAMES)
+
+
+def preprocess(dataframe, date_format='%Y-%m-%d'):
+    # rename column names
+    mapped_columns = dict(zip(COLNAMES, NEW_COLUMN_NAMES))
+    dataframe = dataframe.rename(columns=mapped_columns)
+
+    # format date
+    dataframe['date'] = pd.to_datetime(dataframe['date'])
+    dataframe['date'] = dataframe['date'].dt.strftime(date_format)
+
+    # select used columns
+    dataframe = dataframe[['country_region_code', 'date', 'new_cases']]
+
+    return dataframe
+
+
+def filter_by_country(dataframe, country_code):
+    filtered_df = dataframe[
+        dataframe['country_region_code'] == country_code][
+        ['date', 'new_cases']]
+    return filtered_df
+
+
+def separate(dataframe):
+    X = dataframe['date'].values.reshape(-1, 1)
+
+    dataframe['new_cases'] = dataframe['new_cases'].astype('float32')
+    Y = dataframe['new_cases'].values.reshape(-1, 1)
+
+    return X, Y
+
+
+def normalize(Y):
+    return SCALER.fit_transform(Y)
+
+
+def apply_lookback(dataset, look_back=1):
     dataX, dataY = [], []
     for i in range(len(dataset) - look_back - 1):
         a = dataset[i:(i + look_back), 0]
         dataX.append(a)
         dataY.append(dataset[i + look_back, 0])
-    return numpy.array(dataX), numpy.array(dataY)
+    return np.array(dataX), np.array(dataY)
 
 
-
-def normalize(dataset):
-    """
-        :param: dataset
-        :return: dataset
-    """
-    dataset = scaler.fit_transform(dataset)
-    return dataset
-
-
-def split(dataset, dates):
-    """
-        :param: dataset, dates
-        :return: train, test
-    """
-    train_size = int(len(dataset) * 0.67)
-    test_size = len(dataset) - train_size
-    train_y, test_y = dataset[0:train_size, :], dataset[train_size:len(dataset), :]
-    train_dates, test_dates = dates[0:train_size, :], dates[train_size:len(dates), :]
-    return train_y, test_y, train_dates, test_dates
-
-
-def reshape(trainX, testX):
-    """
-        reshape input to be [samples, time steps, features]
-
-        :param: trainX, testX
-        :return: trainX, testX
-    """
-    trainX = numpy.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
-    testX = numpy.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
-    return trainX, testX
-
-def transform_predict(predict_Y):
-    return scaler.inverse_transform(predict_Y)
-
-def transform(Y):
-    return scaler.inverse_transform([Y])
-
-
-
-def rmse(Y, predict):
-    """
-        calculate root mean squared error
-
-        :param: trainY, train_predict OR testY, test_predict
-        :return: result
-    """
-    result = math.sqrt(mean_squared_error(Y[0], predict[:, 0]))
-    return math.sqrt(mean_squared_error(Y[0], predict[:, 0]))
-
-
-def plot(y, dates, train_predict, test_predict, look_back):
-    """
-        1. shift train predictions for plotting
-        2. shift test predictions for plotting
-        3. plot
-
-        :param: y, train_predict, test_predict, look_back
-        :return:
-    """
-    # 1.
-    train_predict_plot = numpy.empty_like(y)
-    train_predict_plot[:, :] = numpy.nan
-    train_predict_plot[look_back:len(train_predict) + look_back, :] = train_predict
-
-    # 2.
-    test_predict_plot = numpy.empty_like(y)
-    test_predict_plot[:, :] = numpy.nan
-    test_predict_plot[len(train_predict) + (look_back * 2) + 1:len(y) - 1, :] = test_predict
-
-    # 3.
-    plt.plot(dates, scaler.inverse_transform(y))
-    plt.plot(train_predict_plot)
-    plt.plot(test_predict_plot)
-    plt.show()
+def reshape(X):
+    return np.reshape(X, (X.shape[0], 1, X.shape[1]))
