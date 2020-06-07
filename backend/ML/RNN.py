@@ -24,14 +24,28 @@ class RNN:
         self.look_back = look_back
         self.country = country_code
         self.models_src = 'models_countries'
+        self.model = models.load_model(f'{self.models_src}/{self.country}-RNN.h5')
 
-    def load_model(self):
-        return models.load_model(f'{self.models_src}/{self.country}-RNN.h5')
+    def predict(self, day):
+        """
+            Takes current or last available day
+            :param day:
+            :return: prediction of the new number of cases
+        """
+        sample = self.get_sample(day)
+        predict = self.model.predict(sample)
 
-    def predict(self):
-        pass
+    def get_trend(self, day):
+        """
+        Return a insight based on user's input which is a country and a day
+        :param day:
+        :return: prediction trend
+        """
+        predicted = self.predict(day)
+        response = None
+        return response
 
-    def get_trend(self):
+    def get_sample(self, day):
         pass
 
 
