@@ -43,10 +43,19 @@ class RNN:
         X = reshape(X)
         # TODO unite with dates, consider look_back
         united = None
-        # TODO get  based on the day
-        sample = self.get_sample(day)
-        # make predictions
-        predicted = self.model.predict(sample)
+
+        last_day = day
+        predicted = 0
+        for step in range(self.look_forward):
+            # TODO get based on the day
+            sample = self.get_sample(X, last_day)
+
+            # make predictions one step further
+            predicted = self.model.predict(sample)
+            # TODO append the result to X to be last-k | ... | last | predicted
+            #  This will do it for predicting for multiple time stamps
+
+            # TODO last_day += step
 
         message = f'In {self.look_forward} days expected number of cases ' \
             f'will be equal {predicted} '
@@ -64,8 +73,12 @@ class RNN:
 
         return trend
 
-    def get_sample(self, day):
+    def get_sample(self, X, day):
         """
+            Takes self.lookback days behind and the corresponding new cases of
+            COVID-19.
+
         """
-        # TODO get sample based on the day
+        # TODO get sample based on the day and lookback days behind
+        # TODO restriction - has to have lookback days behind
         return [[]]
