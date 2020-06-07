@@ -32,8 +32,9 @@ REQUEST BODY:
 RETURNS: 
     {
       'country_region_code': 'US',
-      'prediction': ?,
-      'message': ?,
+      'prediction': '22837.438',
+      'message': 'In 3 days expected number of cases will be equal 22837.4375',
+      'starting_day': '2020-06-01'
       'trend': 'increasing' OR 'decreasing',
       'success': True
     }, 200

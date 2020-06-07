@@ -22,23 +22,25 @@ def create_app():
         if not request.data:
             abort(400)  # bad request
 
-        data = request.data
+        data = json.loads(request.data)
 
         try:
-            rnn = RNN(country_code=data['country_code'],
+            rnn = RNN(country_code=data['country_region_code'],
                       look_forward=data['look_froward_days'])
 
-            # TODO make sure the available day is taken, today is dummy
-            today = datetime.today()
-            pred_new_cases, message = rnn.predict(today)
-            pred_trend = rnn.get_trend(today)
+            # FIXME make sure the available day is taken, this is hardcoded
+            requested_day = '2020-06-01'
+            pred_new_cases, message = rnn.predict(requested_day)
+            pred_trend = rnn.get_trend(requested_day)
 
-            response_data['country_region_code'] = data['country_code']
-            response_data['prediction'] = pred_new_cases
+            response_data['country_region_code'] = data['country_region_code']
+            response_data['prediction'] = str(pred_new_cases)
             response_data['message'] = message
+            response_data['starting_day'] = requested_day
             response_data['trend'] = pred_trend
             response_data['success'] = True
         except Exception as e:
+            print(e)
             abort(422)  # unprocessable entity
 
         return jsonify(response_data)
@@ -62,4 +64,4 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True, threaded=False)

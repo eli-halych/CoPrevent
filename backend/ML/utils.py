@@ -1,6 +1,6 @@
+import os
 import pandas as pd
 import numpy as np
-
 import time
 import math
 import datetime as dt
@@ -15,7 +15,7 @@ COLNAMES = ['ISO_2_CODE', 'ADM0_NAME', 'date_epicrv',
             'CumDeath']
 NEW_COLUMN_NAMES = ['country_region_code', 'country_region', 'date',
                     'new_cases', 'cum_cases', 'new_deaths', 'cum_deaths']
-DATASET_DIR = '../datasets/'
+DATASET_DIR = f'{os.path.dirname(__file__)}/../datasets'
 FILENAME = 'who_cases_deaths.csv'
 
 np.random.seed(7)
@@ -61,9 +61,13 @@ def normalize(Y):
     return SCALER.fit_transform(Y)
 
 
+def denormalize(sample):
+    return SCALER.inverse_transform(sample)
+
+
 def apply_lookback(dataset, look_back=1):
     dataX, dataY = [], []
-    for i in range(len(dataset) - look_back - 1):
+    for i in range(len(dataset) - look_back):
         a = dataset[i:(i + look_back), 0]
         dataX.append(a)
         dataY.append(dataset[i + look_back, 0])
@@ -71,6 +75,7 @@ def apply_lookback(dataset, look_back=1):
 
 
 def reshape(X):
+
     return np.reshape(X, (X.shape[0], 1, X.shape[1]))
 
 
@@ -79,4 +84,6 @@ def unite_dates_samples(dates, samples):
         Unites dates to make predictions for with samples
         :return: united
     """
-    return np.hstack((dates, samples))
+
+    return np.hstack((dates,
+                      samples))

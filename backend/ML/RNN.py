@@ -1,13 +1,16 @@
+import os
 import time
+import numpy as np
 import datetime as dt
 from matplotlib import pyplot as plt
-from keras import models
+from tensorflow.keras.models import load_model
 from werkzeug.exceptions import abort
 
 # TODO save dependencies to requirements.txt
 # TODO update docstrings
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
-    separate, normalize, apply_lookback, reshape, unite_dates_samples
+    separate, normalize, apply_lookback, reshape, unite_dates_samples, \
+    denormalize
 
 
 class RNN:
@@ -20,11 +23,11 @@ class RNN:
         self.look_back = look_forward
         self.look_forward = look_forward
         self.country_code = country_code
-        self.models_src = 'models_countries'
-        self.model = models.load_model(
+        self.models_src = f'{os.path.dirname(__file__)}/models_countries'
+        self.model = load_model(
             f'{self.models_src}/{self.country_code}-RNN.h5')
 
-    def predict(self, day):
+    def predict(self, requested_day):
         """
         """
         # TODO tests
@@ -47,19 +50,27 @@ class RNN:
 
         # reshape to fit the model
         X = reshape(X)
+        dates = reshape(dates)
+        dates = dates[self.look_back:]
 
-        # unite with dates, consider look_back
-        united_samples = unite_dates_samples(dates, X)
+        # unite with dates, consider
+        # FIXME dates might not be aligned with actual samples
+        united_samples = unite_dates_samples(dates.reshape(-1, 1),
+                                             X.reshape(-1, self.look_back))
+        # print(united_samples)
 
-        last_day = day
+        last_day = requested_day
         predicted = 0
 
         for step in range(self.look_forward):
-            # get based on the day
+
             sample = self.get_sample(united_samples, last_day)
+            sample = sample.reshape(1, 1, self.look_back)
 
             # make predictions one step further
-            predicted = self.model.predict(sample)
+            predicted = self.model.predict(sample.astype(np.float32))
+            predicted = denormalize(predicted)[0, 0]
+
             # TODO append the result to X to be last-k | ... | last | predicted
             #  This will do it for predicting for multiple time stamps
 
@@ -87,8 +98,6 @@ class RNN:
             COVID-19.
 
         """
-        # TODO restriction - has to have lookback days behind
-
         sample = united_samples[united_samples[:, 0] == day]
         sample = sample[0, 1:]  # eliminate date in the first column
         return sample
