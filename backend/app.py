@@ -1,5 +1,9 @@
+from datetime import datetime
+
 from flask import Flask, redirect, request, abort, json, url_for, jsonify
 from werkzeug.exceptions import HTTPException
+
+from backend.ML.RNN import RNN
 
 
 def create_app():
@@ -17,12 +21,22 @@ def create_app():
         if not request.data:
             abort(400)  # bad request
 
+        data = request.data
+
         try:
-            # TODO call an ML model taking in requested_data
-            response_data['prediction'] = 0.0  # TODO apply when ready
-            response_data['message'] = ''  # TODO apply when ready
+            rnn = RNN(country_code=data['country_code'],
+                      look_forward=data['look_froward_days'])
+
+            # TODO make sure the available day is taken, today is dummy
+            today = datetime.today()
+            pred_new_cases, message = rnn.predict(today)
+            pred_trend = rnn.get_trend(today)
+
+            response_data['country_region_code'] = data['country_code']
+            response_data['prediction'] = pred_new_cases
+            response_data['message'] = message
+            response_data['trend'] = pred_trend
             response_data['success'] = True
-            # TODO add other necessary data for the map
         except Exception as e:
             abort(422)  # unprocessable entity
 

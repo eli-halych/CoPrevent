@@ -30,14 +30,17 @@ REQUEST BODY:
       'look_froward_days': 3
     }
 RETURNS: 
-    personalized prediction, 
-    success status, 
-    a message, 
-    other miscellaneous information
-    and a status code.
-NOTES:
-    request body details are based on reagion codes from another API?
+    {
+      'country_region_code': 'US',
+      'prediction': ?,
+      'message': ?,
+      'trend': 'increasing' OR 'decreasing',
+      'success': True
+    }, 200
 ```
+
+Region codes are described here:
+[`./datasets/README.md`](./datasets/README.md)
 
 ### Tests
 All endpoints are covered with unittests. To call tests, call the main test class

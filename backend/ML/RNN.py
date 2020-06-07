@@ -17,11 +17,12 @@ from .utils import look_back_dataset, \
 
 
 class RNN:
-    def __init__(self, country_code, look_back=3):
+    def __init__(self, country_code, look_back=3, look_forward=3):
         if not country_code:
             abort(422)
 
         self.look_back = look_back
+        self.look_forward = look_forward
         self.country = country_code
         self.models_src = 'models_countries'
         self.model = models.load_model(f'{self.models_src}/{self.country}-RNN.h5')
