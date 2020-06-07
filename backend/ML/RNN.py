@@ -31,24 +31,32 @@ class RNN:
 
         # TODO refactor: get data from database
         df = load_data()
+
+        # preprocess
         df = preprocess(df)
         df = filter_by_country(df, self.country_code)
+
         # separate cases from data
         dates, Y = separate(df)
-        # normalize X
+
+        # normalize Y
         Y = normalize(Y)
+
         # apply look_back and generate needed samples
-        X, _ = apply_lookback(Y, look_back=1)
+        X, _ = apply_lookback(Y, look_back=self.look_back)
+
         # reshape to fit the model
         X = reshape(X)
+
         # unite with dates, consider look_back
         united_samples = unite_dates_samples(dates, X)
 
         last_day = day
         predicted = 0
+
         for step in range(self.look_forward):
-            # TODO get based on the day
-            sample = self.get_sample(X, last_day)
+            # get based on the day
+            sample = self.get_sample(united_samples, last_day)
 
             # make predictions one step further
             predicted = self.model.predict(sample)
@@ -73,12 +81,14 @@ class RNN:
 
         return trend
 
-    def get_sample(self, X, day):
+    def get_sample(self, united_samples, day):
         """
             Takes self.lookback days behind and the corresponding new cases of
             COVID-19.
 
         """
-        # TODO get sample based on the day and lookback days behind
         # TODO restriction - has to have lookback days behind
-        return [[]]
+
+        sample = united_samples[united_samples[:, 0] == day]
+        sample = sample[0, 1:]  # eliminate date in the first column
+        return sample
