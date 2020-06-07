@@ -27,7 +27,7 @@ DESCRIPTION:
 REQUEST BODY: 
     {
       'country_region_code': 'US',
-      'days': 3
+      'look_froward_days': 3
     }
 RETURNS: 
     personalized prediction, 
