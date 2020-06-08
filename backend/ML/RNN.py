@@ -84,7 +84,7 @@ class RNN:
 
         predicted = denormalize(predicted)[0, 0]
         predicted = int(predicted)
-        message = f'On {last_day} expect the number of cases ' \
+        message = f'On {last_day} expect the number of new cases ' \
             f'to be equal {predicted} '
 
         return predicted, message

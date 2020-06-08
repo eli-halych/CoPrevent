@@ -27,7 +27,7 @@ DESCRIPTION:
 REQUEST BODY: 
     {
       'country_region_code': 'US',
-      'look_froward_days': 3
+      'look_forward_days': 3
     }
 RETURNS: 
     {
