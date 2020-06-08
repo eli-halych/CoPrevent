@@ -21,21 +21,17 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['name'], 'Bad Request')
 
         # successful call
-        # TODO fill out when known
         request_data = json.dumps({
-            'country_region_code': None,
-            'country_region': None,
-            'sub_region_1': None,
-            'sub_region_2': None,
-            'date': None,
-            'still_on_lockdown': False
+              "country_region_code": "US",
+              "look_forward_days": 3,
+              "starting_day": "2020-05-01"
         })
 
         res = self.client().post('/survey', data=request_data)
         data = json.loads(res.data)
 
-        self.assertEqual(data['prediction'], 0.0)
-        self.assertEqual(data['message'], '')
+        self.assertEqual(data['prediction'], str(26489))
+        # self.assertEqual(data['message'], '')
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
 
