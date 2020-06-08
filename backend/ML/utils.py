@@ -18,7 +18,7 @@ NEW_COLUMN_NAMES = ['country_region_code', 'country_region', 'date',
                     'new_cases', 'cum_cases', 'new_deaths', 'cum_deaths']
 DATASET_DIR = f'{os.path.dirname(__file__)}/../datasets'
 FILENAME = 'who_cases_deaths.csv'
-DATE_FORMAT='%Y-%m-%d'
+DATE_FORMAT = '%Y-%m-%d'
 
 np.random.seed(7)
 SCALER = MinMaxScaler(feature_range=(0, 1))
@@ -96,26 +96,25 @@ def append_sample(array, predicted, look_back, requested_day, step):
         1. tomorrow
         2. the day after tomorrow
     """
+
+    # next date
     next = 1
     date = datetime.strptime(requested_day, DATE_FORMAT)
-    next_date = date + timedelta(days=step+next)
+    next_date = date + timedelta(days=step + next)
     next_date_formatted = np.array(
         [datetime.strftime(next_date, DATE_FORMAT)]
     )
 
-    print(array[array[:, 0] == requested_day, :])
-    selected = array[array[:, 0] == requested_day, 2:].reshape(look_back-1, )
-    # print(selected)
+    # generate next sample
+    selected = array[array[:, 0] == requested_day, 2:].reshape(look_back - 1, )
     selected = np.append(selected, predicted.reshape(1, ))
-    # print(selected)
-
     next_sample = np.append(next_date_formatted, selected)
-    # print(next_sample)
 
-    array = np.vstack((array, next_sample))
-    # print(array.shape)
+    # append next sample
+    # FIXME bad append
+    if len(array[array[:, 0] == next_date_formatted, :]) == 0:
+        array = np.vstack((array, next_sample))
+    else:
+        array[array[:, 0] == next_date_formatted] = next_sample
 
-    requested_day = next_date_formatted
-
-    # print(requested_day)
     return array, next_date_formatted[0]
