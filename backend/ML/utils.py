@@ -84,14 +84,20 @@ def unite_dates_samples(dates, samples):
                       samples))
 
 
+def change_date(date, delta_days=0):
+    detla = timedelta(days=delta_days)
+    next_date = date + detla
+
+    return next_date
+
+
 def append_sample(array, predicted, look_back, requested_day, step):
     """
     """
 
     # next date
     date = datetime.strptime(requested_day, DATE_FORMAT)
-    detla = timedelta(days=1)
-    next_date = date + detla
+    next_date = change_date(date, delta_days=1)
     next_date_formatted = np.array(
         [datetime.strftime(next_date, DATE_FORMAT)]
     )

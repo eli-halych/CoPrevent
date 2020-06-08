@@ -10,7 +10,7 @@ from werkzeug.exceptions import abort
 # TODO update docstrings
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
     separate, normalize, apply_lookback, reshape, unite_dates_samples, \
-    denormalize, append_sample
+    denormalize, append_sample, change_date, DATE_FORMAT
 
 
 class RNN:
@@ -65,7 +65,7 @@ class RNN:
         last_day = requested_day
         predicted = 0
 
-        for step in range(self.look_forward):
+        for step in range(self.look_forward + 1):
             print(f'Last day: {last_day}')
             sample, last_day = self.get_sample(united_samples, last_day)
             sample = sample.reshape(1, 1, self.look_back)
@@ -81,6 +81,11 @@ class RNN:
             print(denormalize(predicted)[0, 0])
 
         print(united_samples[-10:])
+        print(last_day)
+        last_day = dt.datetime.strptime(last_day, DATE_FORMAT)
+        last_day = change_date(last_day, delta_days=-1)
+        last_day = dt.datetime.strftime(last_day, DATE_FORMAT)
+        print(last_day)
 
         predicted = denormalize(predicted)[0, 0]
         predicted = int(predicted)
