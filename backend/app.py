@@ -29,7 +29,7 @@ def create_app():
                       look_forward=data['look_froward_days'])
 
             # FIXME make sure the available day is taken, this is hardcoded
-            requested_day = '2020-05-28'
+            requested_day = data['starting_day']
             pred_new_cases, message = rnn.predict(requested_day)
             pred_trend = rnn.get_trend(requested_day)
 

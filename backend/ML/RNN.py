@@ -67,23 +67,25 @@ class RNN:
 
         for step in range(self.look_forward):
             print(f'Last day: {last_day}')
-            sample = self.get_sample(united_samples, last_day)
+            sample, last_day = self.get_sample(united_samples, last_day)
             sample = sample.reshape(1, 1, self.look_back)
 
             # make predictions one step further
             predicted = self.model.predict(sample.astype(np.float32))
             print(predicted)
 
-            united_samples, last_day = append_sample(united_samples, predicted, self.look_back,
-                          last_day, step)
+            united_samples, last_day = append_sample(united_samples, predicted,
+                                                     self.look_back,
+                                                     last_day, step)
 
             print(denormalize(predicted)[0, 0])
 
         print(united_samples[-10:])
 
         predicted = denormalize(predicted)[0, 0]
-        message = f'In {self.look_forward} days expected number of cases ' \
-            f'will be equal {predicted} '
+        predicted = int(predicted)
+        message = f'On {last_day} expect the number of cases ' \
+            f'to be equal {predicted} '
 
         return predicted, message
 
@@ -104,6 +106,13 @@ class RNN:
             COVID-19.
 
         """
-        sample = united_samples[united_samples[:, 0] == day]
+        search_res = np.where(united_samples[:, 0] == day)[0]
+        if len(search_res) == 0:
+            sample = united_samples[-1:, :]
+            day_taken = sample[0, 0]
+        else:
+            sample = united_samples[united_samples[:, 0] == day]
+            day_taken = day
+
         sample = sample[0, 1:]  # eliminate date in the first column
-        return sample
+        return sample, day_taken

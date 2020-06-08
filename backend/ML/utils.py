@@ -1,15 +1,9 @@
 import os
-import pandas as pd
-import numpy as np
-import time
-import math
-import datetime as dt
 from datetime import datetime, timedelta
-from matplotlib import pyplot as plt
 
+import numpy as np
+import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
 
 COLNAMES = ['ISO_2_CODE', 'ADM0_NAME', 'date_epicrv',
             'NewCase', 'CumCase', 'NewDeath',
@@ -92,9 +86,6 @@ def unite_dates_samples(dates, samples):
 
 def append_sample(array, predicted, look_back, requested_day, step):
     """
-        0. current
-        1. tomorrow
-        2. the day after tomorrow
     """
 
     # next date
