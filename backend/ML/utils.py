@@ -108,7 +108,6 @@ def append_sample(array, predicted, look_back, requested_day, step):
     next_sample = np.append(next_date_formatted, selected)
 
     # append next sample
-    print(next_sample)
     if len(array[array[:, 0] == next_date_formatted, :]) == 0:
         array = np.vstack((array, next_sample))
     else:

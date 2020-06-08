@@ -21,7 +21,7 @@ class RNN:
             abort(422)
 
         self.look_back = look_forward
-        self.look_forward = look_forward
+        self.look_forward = look_forward + 1
         self.country_code = country_code
         self.models_src = f'{os.path.dirname(__file__)}/models_countries'
         self.model = keras.models.load_model(
@@ -41,16 +41,12 @@ class RNN:
 
         # separate cases from data
         dates, Y = separate(df)
-        print(dates[-5:])
-        print(Y[-5:])
 
         # normalize Y
         Y = normalize(Y)
-        print(Y[-5:])
 
         # apply look_back and generate needed samples
         X, _ = apply_lookback(Y, look_back=self.look_back)
-        print(X[-5:])
 
         # reshape to fit the model
         X = reshape(X)
@@ -60,32 +56,24 @@ class RNN:
         # unite with dates, consider
         united_samples = unite_dates_samples(dates.reshape(-1, 1),
                                              X.reshape(-1, self.look_back))
-        print(united_samples[-5:])
 
         last_day = requested_day
         predicted = 0
 
-        for step in range(self.look_forward + 1):
-            print(f'Last day: {last_day}')
+        for step in range(self.look_forward):
             sample, last_day = self.get_sample(united_samples, last_day)
             sample = sample.reshape(1, 1, self.look_back)
 
             # make predictions one step further
             predicted = self.model.predict(sample.astype(np.float32))
-            print(predicted)
 
             united_samples, last_day = append_sample(united_samples, predicted,
                                                      self.look_back,
                                                      last_day, step)
 
-            print(denormalize(predicted)[0, 0])
-
-        print(united_samples[-10:])
-        print(last_day)
         last_day = dt.datetime.strptime(last_day, DATE_FORMAT)
         last_day = change_date(last_day, delta_days=-1)
         last_day = dt.datetime.strftime(last_day, DATE_FORMAT)
-        print(last_day)
 
         predicted = denormalize(predicted)[0, 0]
         predicted = int(predicted)

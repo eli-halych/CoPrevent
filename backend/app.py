@@ -40,7 +40,6 @@ def create_app():
             response_data['trend'] = pred_trend
             response_data['success'] = True
         except Exception as e:
-            print(e)
             abort(422)  # unprocessable entity
 
         return jsonify(response_data)
