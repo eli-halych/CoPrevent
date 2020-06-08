@@ -1,13 +1,18 @@
-from datetime import datetime
+import os
 
-from flask import Flask, redirect, request, abort, json, url_for, jsonify
+from flask import Flask, request, abort, json, jsonify, render_template
 from werkzeug.exceptions import HTTPException
 
 from backend.ML.RNN import RNN
 
+template_dir = os.path.abspath('frontend/templates')
+static_dir = os.path.abspath('frontend/static')
+
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__,
+                template_folder=template_dir,
+                static_folder=static_dir)
 
     @app.route('/survey', methods=['POST'])
     def post_survey():
@@ -41,6 +46,10 @@ def create_app():
             abort(422)  # unprocessable entity
 
         return jsonify(response_data)
+
+    @app.route('/')
+    def present():
+        return render_template("world.html")
 
     @app.errorhandler(HTTPException)
     def handle_exception(e):
