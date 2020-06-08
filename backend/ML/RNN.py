@@ -10,7 +10,7 @@ from werkzeug.exceptions import abort
 # TODO update docstrings
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
     separate, normalize, apply_lookback, reshape, unite_dates_samples, \
-    denormalize
+    denormalize, append_sample
 
 
 class RNN:
@@ -41,12 +41,16 @@ class RNN:
 
         # separate cases from data
         dates, Y = separate(df)
+        print(dates[-5:])
+        print(Y[-5:])
 
         # normalize Y
         Y = normalize(Y)
+        print(Y[-5:])
 
         # apply look_back and generate needed samples
         X, _ = apply_lookback(Y, look_back=self.look_back)
+        print(X[-5:])
 
         # reshape to fit the model
         X = reshape(X)
@@ -54,28 +58,34 @@ class RNN:
         dates = dates[self.look_back:]
 
         # unite with dates, consider
-        # FIXME dates might not be aligned with actual samples
         united_samples = unite_dates_samples(dates.reshape(-1, 1),
                                              X.reshape(-1, self.look_back))
-        # print(united_samples)
+        print(united_samples[-5:])
 
         last_day = requested_day
         predicted = 0
 
         for step in range(self.look_forward):
-
+            print(f'Last day: {last_day}')
             sample = self.get_sample(united_samples, last_day)
             sample = sample.reshape(1, 1, self.look_back)
 
             # make predictions one step further
             predicted = self.model.predict(sample.astype(np.float32))
-            predicted = denormalize(predicted)[0, 0]
+            print(predicted)
 
             # TODO append the result to X to be last-k | ... | last | predicted
             #  This will do it for predicting for multiple time stamps
+            united_samples, last_day = append_sample(united_samples, predicted, self.look_back,
+                          last_day, step)
 
             # TODO last_day += step
 
+            print(denormalize(predicted)[0, 0])
+
+        print(united_samples[-10:])
+
+        predicted = denormalize(predicted)[0, 0]
         message = f'In {self.look_forward} days expected number of cases ' \
             f'will be equal {predicted} '
 
