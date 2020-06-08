@@ -74,12 +74,8 @@ class RNN:
             predicted = self.model.predict(sample.astype(np.float32))
             print(predicted)
 
-            # TODO append the result to X to be last-k | ... | last | predicted
-            #  This will do it for predicting for multiple time stamps
             united_samples, last_day = append_sample(united_samples, predicted, self.look_back,
                           last_day, step)
-
-            # TODO last_day += step
 
             print(denormalize(predicted)[0, 0])
 

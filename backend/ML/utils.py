@@ -98,9 +98,9 @@ def append_sample(array, predicted, look_back, requested_day, step):
     """
 
     # next date
-    next = 1
     date = datetime.strptime(requested_day, DATE_FORMAT)
-    next_date = date + timedelta(days=step + next)
+    detla = timedelta(days=1)
+    next_date = date + detla
     next_date_formatted = np.array(
         [datetime.strftime(next_date, DATE_FORMAT)]
     )
@@ -111,7 +111,7 @@ def append_sample(array, predicted, look_back, requested_day, step):
     next_sample = np.append(next_date_formatted, selected)
 
     # append next sample
-    # FIXME bad append
+    print(next_sample)
     if len(array[array[:, 0] == next_date_formatted, :]) == 0:
         array = np.vstack((array, next_sample))
     else:
