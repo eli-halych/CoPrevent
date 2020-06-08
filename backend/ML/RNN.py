@@ -3,7 +3,7 @@ import time
 import numpy as np
 import datetime as dt
 from matplotlib import pyplot as plt
-from tensorflow.keras.models import load_model
+from tensorflow import keras
 from werkzeug.exceptions import abort
 
 # TODO save dependencies to requirements.txt
@@ -24,7 +24,7 @@ class RNN:
         self.look_forward = look_forward
         self.country_code = country_code
         self.models_src = f'{os.path.dirname(__file__)}/models_countries'
-        self.model = load_model(
+        self.model = keras.models.load_model(
             f'{self.models_src}/{self.country_code}-RNN.h5')
 
     def predict(self, requested_day):
