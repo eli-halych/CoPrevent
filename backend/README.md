@@ -21,6 +21,8 @@
 
 ```
 1. POST '/survey'
+ASSUMPTIONS:
+    The time series is sorted.
 DESCRIPTION: 
     calls an ML model,
     returns prediction/insight information based on request data.

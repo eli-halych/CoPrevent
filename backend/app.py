@@ -9,7 +9,6 @@ from backend.ML.RNN import RNN
 def create_app():
     app = Flask(__name__)
 
-    # TODO tests
     @app.route('/survey', methods=['POST'])
     def post_survey():
         """
@@ -28,7 +27,6 @@ def create_app():
             rnn = RNN(country_code=data['country_region_code'],
                       look_forward=data['look_forward_days'])
 
-            # FIXME make sure the available day is taken, this is hardcoded
             requested_day = data['starting_day']
             pred_new_cases, message = rnn.predict(requested_day)
             pred_trend = rnn.get_trend(requested_day)
