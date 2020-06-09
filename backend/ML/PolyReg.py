@@ -1,30 +1,20 @@
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LinearRegression
+from datetime import datetime as dt
 
 import numpy as np
-import pandas as pd
-from datetime import datetime as dt
-from matplotlib import pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
 
 from backend.ML.utils import change_date, DATE_FORMAT
 
 BOOL_COND_ARRAY = []
 
-def get_trend_pred(starting_date, prediction_info, united_samples):
+
+def get_trend_pred(united_samples):
     """
         # TODO implement increasing/decreasing trend insight
         features are dates
         labels are values
     """
-
-    # FIXME rn dates are a day forward
-    #  SOLUTION:
-    #   [done] 1. move all dates a day behind
-    # TODO trend:
-    #  SOLUTION:
-    #  [done] 1. get a value from regression for the starting date
-    #  [done] 2. get a value from regression for the ending date
-    #  3. Compare values to define a trend
 
     features = united_samples[:, :1].astype(str)
     labels = united_samples[:, -1:]
@@ -60,19 +50,12 @@ def get_trend_pred(starting_date, prediction_info, united_samples):
     trend_labels = linreg_model.predict(
         poly_features.fit_transform(numerical_dates))
 
-    # TODO remove
-    viz_polymonial(numerical_dates, labels, trend_labels)
+    ahead = trend_labels[-1:, 0]
+    behind = trend_labels[-1 - 3:-3, 0]
 
-    trend = None
-
-    return trend
-
-
-def viz_polymonial(x, y, y_pred):
-    plt.plot(x, y, color='red')
-    plt.plot(x, y_pred, color='blue')
-    plt.title('Prediction of new cases (Linear Regression)')
-    plt.xlabel('Date')
-    plt.ylabel('New cases')
-    plt.show()
-    return
+    if ahead > behind:
+        return 'upward'
+    elif ahead < behind:
+        return 'downward'
+    else:
+        return 'not_changed'

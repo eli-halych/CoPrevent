@@ -35,9 +35,7 @@ def create_app():
 
             requested_day = data['requested_date']
             prediction_info, samples = rnn.predict(requested_day)
-            trend = get_trend_pred(prediction_info['starting_date'],
-                                   prediction_info,
-                                   samples)
+            trend = get_trend_pred(samples)
 
             response_data['prediction_new_cases'] = \
                 str(prediction_info['prediction_new_cases'])
@@ -51,7 +49,6 @@ def create_app():
             response_data['success'] = True
 
         except Exception as e:
-            print(e)
             abort(422)  # unprocessable entity
 
         return jsonify(response_data)
