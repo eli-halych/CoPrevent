@@ -198,7 +198,7 @@ def change_date(date, delta_days=0):
 
         :param      date:           datetime.datetim
         :param      delta_days:     int
-        :return     next_date:      datetime.datetim
+        :return     next_date:      str
     """
 
     detla = timedelta(days=delta_days)
