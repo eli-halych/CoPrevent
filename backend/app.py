@@ -3,6 +3,7 @@ import os
 from flask import Flask, request, abort, json, jsonify, render_template
 from werkzeug.exceptions import HTTPException
 
+from backend.ML.PolyReg import get_trend_pred
 from backend.ML.RNN import RNN
 
 template_dir = os.path.abspath('frontend/templates')
@@ -33,7 +34,10 @@ def create_app():
                       look_forward=data['look_forward_days'])
 
             requested_day = data['requested_date']
-            prediction_info, pred_trend = rnn.get_trend_pred(requested_day)
+            prediction_info, samples = rnn.predict(requested_day)
+            trend = get_trend_pred(prediction_info['starting_date'],
+                                   prediction_info,
+                                   samples)
 
             response_data['prediction_new_cases'] = \
                 str(prediction_info['prediction_new_cases'])
@@ -43,7 +47,7 @@ def create_app():
                 str(prediction_info['starting_date'])
 
             response_data['country_region_code'] = data['country_region_code']
-            response_data['trend'] = pred_trend
+            response_data['trend'] = trend
             response_data['success'] = True
 
         except Exception as e:

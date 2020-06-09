@@ -4,9 +4,10 @@ import datetime as dt
 from tensorflow import keras
 from werkzeug.exceptions import abort
 
+from backend.ML.utils import DATE_FORMAT
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
     separate, normalize, apply_lookback, reshape, unite_dates_samples, \
-    denormalize, append_sample, change_date, DATE_FORMAT, get_sample
+    denormalize, append_sample, change_date, get_sample
 
 
 class RNN:
@@ -59,7 +60,8 @@ class RNN:
         dates = reshape(dates)
         dates = dates[self.look_back:]
 
-        # unite with dates
+        # unite samples (X) with dates
+        # a date of a sample corresponds to the future prediction value (Y)
         united_samples = unite_dates_samples(dates.reshape(-1, 1),
                                              X.reshape(-1, self.look_back))
 
@@ -92,21 +94,11 @@ class RNN:
         predicted = int(predicted)
 
         prediction_info = {
-            'prediction_date': start_avail_day,
-            'starting_date': last_day,
+            'prediction_date': last_day,
+            'starting_date': start_avail_day,
             'prediction_new_cases': predicted
         }
 
-        return prediction_info
+        return prediction_info, united_samples
 
-    def get_trend_pred(self, requested_day):
-        """
-            # TODO implement increasing/decreasing trend insight
-        """
 
-        prediction_info = self.predict(requested_day)
-
-        # TODO trend
-        trend = None
-
-        return prediction_info, trend
