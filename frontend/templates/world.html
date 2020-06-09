@@ -27,6 +27,24 @@
     ></script>
 
     <script>
+      function getMapName(countryCode) {
+        var request = new XMLHttpRequest();
+        request.open("GET", "../static/data/countryCodesNames.txt", false);
+        request.send(null);
+
+        var jsonObject = request.responseText.split(/\r?\n|\r/);
+
+        for (var i = 1; i < jsonObject.length; i++) {
+
+          let code = jsonObject[i].split(',')[0];
+          let mapName = jsonObject[i].split(',')[1];
+
+          if (code === countryCode) {
+            return mapName;
+          }
+        }
+      }
+
       jQuery(document).ready(function() {
         jQuery("#vmap").vectorMap({
           map: "world_en",
@@ -42,12 +60,15 @@
           //get regionCode
           onRegionClick: function(element, code, region) {
             var regionCode = code.toUpperCase();
+
             var message =
               'You clicked "' + region + '" which has the code: ' + regionCode;
-            console.log(message);
+            console.log(message, element);
             //calling hidden step 2 survey
             document.getElementById("navigateStep2").click();
             checkRegionCode(regionCode);
+            getMapName(regionCode);
+
           }
         });
       });
