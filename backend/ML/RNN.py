@@ -1,12 +1,11 @@
 import os
 import numpy as np
-import datetime as dt
 from tensorflow import keras
 from werkzeug.exceptions import abort
 
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
     separate, normalize, apply_lookback, reshape, unite_dates_samples, \
-    denormalize, append_sample, change_date, DATE_FORMAT, get_sample
+    denormalize, append_sample, change_date, get_sample
 
 
 class RNN:
@@ -59,7 +58,8 @@ class RNN:
         dates = reshape(dates)
         dates = dates[self.look_back:]
 
-        # unite with dates, consider
+        # unite samples (X) with dates
+        # a date of a sample corresponds to the future prediction value (Y)
         united_samples = unite_dates_samples(dates.reshape(-1, 1),
                                              X.reshape(-1, self.look_back))
 
@@ -67,7 +67,6 @@ class RNN:
         predicted = 0
 
         for step in range(self.look_forward):
-
             sample, last_day = get_sample(united_samples, last_day)
             sample = sample.reshape(1, 1, self.look_back)
 
@@ -78,20 +77,22 @@ class RNN:
                                                      last_day)
 
         # date of the prediction
-        last_day = dt.datetime.strptime(last_day, DATE_FORMAT)
         last_day = change_date(last_day, delta_days=-1)
-        last_day = dt.datetime.strftime(last_day, DATE_FORMAT)
 
+        # chosen starting date
+        start_avail_day = change_date(last_day,
+                                      delta_days=-self.look_back)
+
+        # convert to a real number of COVID-19 cases
         predicted = denormalize(predicted)[0, 0]
         predicted = int(predicted)
 
-        message = f'On {last_day} expect the number of new cases ' \
-            f'to be equal {predicted} '
+        prediction_info = {
+            'prediction_date': last_day,
+            'starting_date': start_avail_day,
+            'prediction_new_cases': predicted
+        }
 
-        return predicted, message
+        return prediction_info, united_samples
 
-    def get_trend(self, day):
-        """
-            # TODO implement increasing/decreasing trend insight
-        """
-        pass
+
