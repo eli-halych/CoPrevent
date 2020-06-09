@@ -9,7 +9,7 @@ from backend.ML.utils import change_date, DATE_FORMAT
 BOOL_COND_ARRAY = []
 
 
-def get_trend_pred(united_samples):
+def get_trend_pred(united_samples, look_back):
     """
         Takes all samples appended with all prediction numbers
             and prediction dates.
@@ -21,14 +21,16 @@ def get_trend_pred(united_samples):
             Samples are filtered to start in 2020-04, when COVID-19 became the
             global issue. A boolean array is used.
 
-            When dates match COVID-19 cases, polynimial regression is applied.
+            When dates match COVID-19 cases, polynomial regression is applied.
 
             After a trend is defined, the last value on the trend line is
-            compared with the value at the # TODO look_back days behind.
+            compared with the value at the look_back days behind.
 
 
             :param      united_samples:         numpy.ndarray
                         united_samples.shape:   (N, 4)
+
+                        look_back:              int
             :return:                            str
     """
 
@@ -67,10 +69,7 @@ def get_trend_pred(united_samples):
         poly_features.fit_transform(numerical_dates))
 
     ahead = trend_labels[-1:, 0]
-    behind = trend_labels[-1 - 3:-3, 0]
-
-    print(type(united_samples))
-    print(united_samples.shape)
+    behind = trend_labels[-look_back-1: -look_back, 0]
 
     if ahead > behind:
         return 'upward'

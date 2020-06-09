@@ -18,8 +18,6 @@ def create_app():
     @app.route('/survey', methods=['POST'])
     def post_survey():
         """
-            Send filled out survey form data
-            :return: prediction and filtered
         """
 
         response_data = {}
@@ -35,7 +33,7 @@ def create_app():
 
             requested_day = data['requested_date']
             prediction_info, samples = rnn.predict(requested_day)
-            trend = get_trend_pred(samples)
+            trend = get_trend_pred(samples, data['look_forward_days'])
 
             response_data['prediction_new_cases'] = \
                 str(prediction_info['prediction_new_cases'])
