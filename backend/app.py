@@ -18,6 +18,14 @@ def create_app():
     @app.route('/survey', methods=['POST'])
     def post_survey():
         """
+            Captures user's request for a prediction with a date,
+                a number of days to look forward
+                and a country code.
+
+            Returns a predicted number of new COVID-19 cases into the future,
+                and its trend direction.
+
+            :return: application/json
         """
 
         response_data = {}
