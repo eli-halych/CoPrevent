@@ -33,6 +33,11 @@ def get_trend_pred(starting_date, prediction_info, united_samples):
     new_dates = np.fromiter(generator, features.dtype)
     new_dates = new_dates.reshape(-1, 1)
 
+    # converting date to numerical source:
+    generator = (dt.toordinal(dt.strptime(date[0], DATE_FORMAT)) for date in features)
+    numerical_dates = np.fromiter(generator, features.dtype)
+    numerical_dates = numerical_dates.reshape(-1, 1).astype(float)
+
     trend = None
 
     return trend
