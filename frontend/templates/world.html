@@ -1,172 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
+<head>
     <title>CoPrevent Website: Social-Good Hackathon</title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 
     <link
-      href="../static/dist/jqvmap.css"
-      media="screen"
-      rel="stylesheet"
-      type="text/css"
+            href="../static/dist/jqvmap.css"
+            media="screen"
+            rel="stylesheet"
+            type="text/css"
     />
 
     <script
-      type="text/javascript"
-      src="https://code.jquery.com/jquery-1.11.3.min.js"
+            type="text/javascript"
+            src="https://code.jquery.com/jquery-1.11.3.min.js"
     ></script>
-    <script type="text/javascript" src="../static/dist/jquery.vmap.js"></script>
+    <script type="text/javascript"
+            src="../static/dist/jquery.vmap.js"></script>
     <script
-      type="text/javascript"
-      src="../static/dist/maps/jquery.vmap.world.js"
+            type="text/javascript"
+            src="../static/dist/maps/jquery.vmap.world.js"
     ></script>
     <script
-      type="text/javascript"
-      src="../static/js/jquery.vmap.sampledata.js"
+            type="text/javascript"
+            src="../static/js/jquery.vmap.sampledata.js"
     ></script>
 
     <script>
-      function getMapName(countryCode) {
-        var request = new XMLHttpRequest();
-        request.open("GET", "../static/data/countryCodesNames.txt", false);
-        request.send(null);
+        function getMapName(countryCode) {
+            var request = new XMLHttpRequest();
+            request.open("GET", "../static/data/countryCodesNames.txt", false);
+            request.send(null);
 
-        var jsonObject = request.responseText.split(/\r?\n|\r/);
+            var jsonObject = request.responseText.split(/\r?\n|\r/);
 
-        for (var i = 1; i < jsonObject.length; i++) {
+            for (var i = 1; i < jsonObject.length; i++) {
 
-          let code = jsonObject[i].split(',')[0];
-          let mapName = jsonObject[i].split(',')[1];
+                let code = jsonObject[i].split(',')[0];
+                let mapName = jsonObject[i].split(',')[1];
 
-          if (code === countryCode) {
-            return mapName;
-          }
+                if (code === countryCode) {
+                    return mapName;
+                }
+            }
         }
-      }
 
-      jQuery(document).ready(function() {
-        jQuery("#vmap").vectorMap({
-          map: "world_en",
-          backgroundColor: "#FAFAFA",
-          color: "#ffffff",
-          hoverOpacity: 0.7,
-          selectedColor: "#F37068",
-          enableZoom: false,
-          showTooltip: true,
-          scaleColors: ["#C8EEFF", "#006491"],
-          values: sample_data,
-          normalizeFunction: "polynomial",
-          //get regionCode
-          onRegionClick: function(element, code, region) {
-            var regionCode = code.toUpperCase();
+        jQuery(document).ready(function () {
+            jQuery("#vmap").vectorMap({
+                map: "world_en",
+                backgroundColor: "#FAFAFA",
+                color: "#ffffff",
+                hoverOpacity: 0.7,
+                selectedColor: "#F37068",
+                enableZoom: false,
+                showTooltip: true,
+                scaleColors: ["#C8EEFF", "#006491"],
+                values: sample_data,
+                normalizeFunction: "polynomial",
+                //get regionCode
+                onRegionClick: function (element, code, region) {
+                    var regionCode = code.toUpperCase();
 
-            var message =
-              'You clicked "' + region + '" which has the code: ' + regionCode;
-            console.log(message, element);
-            //calling hidden step 2 survey
-            document.getElementById("navigateStep2").click();
-            checkRegionCode(regionCode);
-            getMapName(regionCode);
+                    var message =
+                        'You clicked "' + region + '" which has the code: ' + regionCode;
+                    console.log(message, element);
 
-          }
+                    //calling hidden step 2 survey
+                    document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
+                    document.getElementById("navigateStep2").click();
+                    checkRegionCode(regionCode);
+
+
+                }
+            });
         });
-      });
     </script>
-    <link rel="stylesheet" href="../static/mainStyle.css" />
-  </head>
-  <body>
-    <div id="vmap"></div>
-    <div class="top"></div>
-    <img
-      class="titleImg"
-      src="../static/images/HackathonWebsiteTitle.png"
-      alt=""
-    />
-    <img class="teamLogo" src="../static/images/Hackathon Logo.png" alt="" />
-    <p class="instruction1">
-      <strong> 1. </strong>Please select a country by clicking to predict
-      <br />COVID-19 flow with your own decision
-    </p>
-    <button
-      onclick="clickToShowStep2()"
-      id="navigateStep2"
-      style="visibility: hidden;"
-    >
-      Navigate to Step 2
-    </button>
-
-    <a
-      href="#UpdatingWeeklyActivities"
-      id="anchorStep2"
-      style="visibility: hidden;"
-    >
-      click me to step2</a
-    >
-    <!-- Step2 -->
-    <a name="UpdatingWeeklyActivities"></a>
-    <!-- step 2 Anchor -->
-    <div id="step2WholeSurvey" style="display: none;">
-      <img
-        class="titleWeeklyActivities"
-        src="../static/images/HackathonWeeklyActivities.png"
+    <link rel="stylesheet" href="../static/mainStyle.css"/>
+</head>
+<body>
+<div id="vmap"></div>
+<div class="top"></div>
+<img
+        class="titleImg"
+        src="../static/images/HackathonWebsiteTitle.png"
         alt=""
-      />
-      <p class="instruction2">
+/>
+<img class="teamLogo" src="../static/images/Hackathon Logo.png" alt=""/>
+<p class="instruction1">
+    <strong> 1. </strong>Please select a country by clicking to predict
+    <br/>COVID-19 flow with your own decision
+</p>
+<button
+        onclick="clickToShowStep2()"
+        id="navigateStep2"
+        style="visibility: hidden;"
+>
+    Navigate to Step 2
+</button>
+
+<a
+        href="#UpdatingWeeklyActivities"
+        id="anchorStep2"
+        style="visibility: hidden;"
+>
+    click me to step2</a
+>
+<!-- Step2 -->
+<a name="UpdatingWeeklyActivities"></a>
+<!-- step 2 Anchor -->
+<div id="step2WholeSurvey" style="display: none;">
+    <img
+            class="titleWeeklyActivities"
+            src="../static/images/HackathonWeeklyActivities.png"
+            alt=""
+    />
+    <p class="instruction2">
         <strong>
-          2.
+            2.
         </strong>
         Please Update your expected weekly activities
-        <br />
+        <br/>
         and choose wisely for better preventing COVID-19 flow
-      </p>
+    </p>
 
-      <div class="step2Box">
+    <div class="step2Box">
         Tell us your weekly activities in the selected country
-      </div>
-      <!-- Select Country -->
-      <div class="selectedCountryImg" id="selected-country-img" style="width: 600px; height: 400px"></div>
-        <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js" charset="utf-8"></script>
-      <script>
-        $(function(){
-          $('#selected-country-img').vectorMap({
-          map: 'usa_en',
-          enableZoom: false,
-          showTooltip: true,
-          selectedColor: null,
-          hoverColor: null,
-          color: '#006491',
-          regionsSelectable: false
-        });
-        });
-      </script>
-      <!-- Survey -->
-      <div class="weeklyActivitySurvey">
-        <h3>Lockdown start date</h3>
-        <input type="text" />
-        <h3>Lockdown end date</h3>
-        <input type="text" />
-        <br />
-        <br />
-        <button>Submit</button>
-      </div>
-      <!-- end of the step2WholeSurvey div -->
     </div>
+    <!-- Select Country -->
+    <div class="selectedCountryImg" id="selectedCountryImg"
+         style="width: 600px; height: 400px"></div>
 
-    <!-- Step3   -->
-    <!-- Predict Data Title  -->
-    <!--<h1>hello here is the step3</h1>-->
-    <script src="../static/js/world.js"></script>
-    <!-- <script src="world.js"></script> -->
-    <!-- <p class="instruction2">
-      Please select a country by clicking to predict
-      <br />
-      the COVID-19 flow with your own decision
-    </p> -->
-    <!-- <a href="#predictData">
-      Hello, plese see me
-      <br />
-      this is me again!
-    </a> -->
-  </body>
+    <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
+            charset="utf-8"></script>
+    <script>
+        $(function () {
+            $('#selectedCountryImg').vectorMap({
+                map: 'usa_en',
+                enableZoom: false,
+                showTooltip: true,
+                selectedColor: null,
+                hoverColor: null,
+                color: '#006491',
+                regionsSelectable: false
+            });
+        });
+    </script>
+    <!-- Survey -->
+    <div class="weeklyActivitySurvey">
+        <h3>Lockdown start date</h3>
+        <input type="text"/>
+        <h3>Lockdown end date</h3>
+        <input type="text"/>
+        <br/>
+        <br/>
+        <button>Submit</button>
+    </div>
+    <!-- end of the step2WholeSurvey div -->
+</div>
+
+<!-- Step3   -->
+<!-- Predict Data Title  -->
+<!--<h1>hello here is the step3</h1>-->
+<script src="../static/js/world.js"></script>
+<!-- <script src="world.js"></script> -->
+<!-- <p class="instruction2">
+  Please select a country by clicking to predict
+  <br />
+  the COVID-19 flow with your own decision
+</p> -->
+<!-- <a href="#predictData">
+  Hello, plese see me
+  <br />
+  this is me again!
+</a> -->
+</body>
 </html>
