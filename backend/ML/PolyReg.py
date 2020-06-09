@@ -41,6 +41,10 @@ def get_trend_pred(starting_date, prediction_info, united_samples):
     poly_features = PolynomialFeatures(degree=4)
     features_transformed = poly_features.fit_transform(numerical_dates)
 
+    linreg_model = LinearRegression()
+    linreg_model.fit(features_transformed, labels)
+
+
     trend = None
 
     return trend
