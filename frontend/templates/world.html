@@ -39,17 +39,14 @@
           scaleColors: ["#C8EEFF", "#006491"],
           values: sample_data,
           normalizeFunction: "polynomial",
+          //get regionCode
           onRegionClick: function(element, code, region) {
+            var regionCode = code.toUpperCase();
             var message =
-              'You clicked "' +
-              region +
-              '" which has the code: ' +
-              code.toUpperCase();
+              'You clicked "' + region + '" which has the code: ' + regionCode;
             console.log(message);
             //calling hidden step 2 survey
             document.getElementById("navigateStep2").click();
-            var regionCode = code.toUpperCase();
-            console.log(typeof "regionCode");
             checkRegionCode(regionCode);
           }
         });
