@@ -59,7 +59,7 @@ class RNN:
         dates = reshape(dates)
         dates = dates[self.look_back:]
 
-        # unite with dates, consider
+        # unite with dates
         united_samples = unite_dates_samples(dates.reshape(-1, 1),
                                              X.reshape(-1, self.look_back))
 
@@ -67,7 +67,6 @@ class RNN:
         predicted = 0
 
         for step in range(self.look_forward):
-
             sample, last_day = get_sample(united_samples, last_day)
             sample = sample.reshape(1, 1, self.look_back)
 
@@ -82,13 +81,17 @@ class RNN:
         last_day = change_date(last_day, delta_days=-1)
         last_day = dt.datetime.strftime(last_day, DATE_FORMAT)
 
+        # chosen starting date
+        start_avail_day = dt.datetime.strptime(last_day, DATE_FORMAT)
+        start_avail_day = change_date(start_avail_day,
+                                      delta_days=-self.look_back)
+        start_avail_day = dt.datetime.strftime(start_avail_day, DATE_FORMAT)
+
+        # convert to a real number of COVID-19 cases
         predicted = denormalize(predicted)[0, 0]
         predicted = int(predicted)
 
-        message = f'On {last_day} expect the number of new cases ' \
-            f'to be equal {predicted} '
-
-        return predicted, message
+        return start_avail_day, last_day, predicted
 
     def get_trend(self, day):
         """

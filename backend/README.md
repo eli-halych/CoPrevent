@@ -27,18 +27,19 @@ DESCRIPTION:
     calls an ML model,
     returns prediction/insight information based on request data.
 REQUEST BODY: 
-    {
-      'country_region_code': 'US',
-      'look_forward_days': 3
-    }
+  {
+      "country_region_code": "US",
+      "look_forward_days": 3,
+      "requested_date": "2020-06-06"
+  }
 RETURNS: 
     {
-      'country_region_code': 'US',
-      'prediction': '22837.438',
-      'message': 'In 3 days expected number of cases will be equal 22837.4375',
-      'starting_day': '2020-06-01'
-      'trend': 'increasing' OR 'decreasing',
-      'success': True
+      "country_region_code": "US",
+      "prediction_date": "2020-06-04",
+      "prediction_new_cases": "26710",
+      "starting_date": "2020-06-01",
+      "success": true,
+      "trend": null
     }, 200
 ```
 
