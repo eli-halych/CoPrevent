@@ -1,10 +1,8 @@
 import os
 import numpy as np
-import datetime as dt
 from tensorflow import keras
 from werkzeug.exceptions import abort
 
-from backend.ML.utils import DATE_FORMAT
 from backend.ML.utils import load_data, preprocess, filter_by_country, \
     separate, normalize, apply_lookback, reshape, unite_dates_samples, \
     denormalize, append_sample, change_date, get_sample
@@ -79,15 +77,11 @@ class RNN:
                                                      last_day)
 
         # date of the prediction
-        last_day = dt.datetime.strptime(last_day, DATE_FORMAT)
         last_day = change_date(last_day, delta_days=-1)
-        last_day = dt.datetime.strftime(last_day, DATE_FORMAT)
 
         # chosen starting date
-        start_avail_day = dt.datetime.strptime(last_day, DATE_FORMAT)
-        start_avail_day = change_date(start_avail_day,
+        start_avail_day = change_date(last_day,
                                       delta_days=-self.look_back)
-        start_avail_day = dt.datetime.strftime(start_avail_day, DATE_FORMAT)
 
         # convert to a real number of COVID-19 cases
         predicted = denormalize(predicted)[0, 0]

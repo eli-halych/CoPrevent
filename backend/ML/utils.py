@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime as dt, timedelta
 
 import numpy as np
 import pandas as pd
@@ -202,7 +202,11 @@ def change_date(date, delta_days=0):
     """
 
     detla = timedelta(days=delta_days)
+
+    date = dt.strptime(date, DATE_FORMAT)
+
     next_date = date + detla
+    next_date = dt.strftime(next_date, DATE_FORMAT)
 
     return next_date
 
@@ -229,9 +233,7 @@ def append_sample(array, predicted, look_back, requested_day):
     """
 
     # next date
-    date = datetime.strptime(requested_day, DATE_FORMAT)
-    next_date = change_date(date, delta_days=1)
-    next_date_formatted = datetime.strftime(next_date, DATE_FORMAT)
+    next_date_formatted = change_date(requested_day, delta_days=1)
     next_date_formatted = np.array([next_date_formatted])
 
     # generate next sample
