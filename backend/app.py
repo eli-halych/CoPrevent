@@ -32,14 +32,14 @@ def create_app():
             rnn = RNN(country_code=data['country_region_code'],
                       look_forward=data['look_forward_days'])
 
-            requested_day = data['starting_day']
-            pred_new_cases, message = rnn.predict(requested_day)
+            requested_day = data['requested_date']
+            start_avail_day, last_day, predicted = rnn.predict(requested_day)
             pred_trend = rnn.get_trend(requested_day)
 
             response_data['country_region_code'] = data['country_region_code']
-            response_data['prediction'] = str(pred_new_cases)
-            response_data['message'] = message
-            response_data['starting_day'] = requested_day
+            response_data['prediction_new_cases'] = str(predicted)
+            response_data['prediction_date'] = str(last_day)
+            response_data['starting_date'] = start_avail_day
             response_data['trend'] = pred_trend
             response_data['success'] = True
         except Exception as e:
