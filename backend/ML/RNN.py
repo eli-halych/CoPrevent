@@ -91,10 +91,22 @@ class RNN:
         predicted = denormalize(predicted)[0, 0]
         predicted = int(predicted)
 
-        return start_avail_day, last_day, predicted
+        prediction_info = {
+            'prediction_date': start_avail_day,
+            'starting_date': last_day,
+            'prediction_new_cases': predicted
+        }
 
-    def get_trend(self, day):
+        return prediction_info
+
+    def get_trend_pred(self, requested_day):
         """
             # TODO implement increasing/decreasing trend insight
         """
-        pass
+
+        prediction_info = self.predict(requested_day)
+
+        # TODO trend
+        trend = None
+
+        return prediction_info, trend

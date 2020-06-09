@@ -33,15 +33,19 @@ def create_app():
                       look_forward=data['look_forward_days'])
 
             requested_day = data['requested_date']
-            start_avail_day, last_day, predicted = rnn.predict(requested_day)
-            pred_trend = rnn.get_trend(requested_day)
+            prediction_info, pred_trend = rnn.get_trend_pred(requested_day)
+
+            response_data['prediction_new_cases'] = \
+                str(prediction_info['prediction_new_cases'])
+            response_data['prediction_date'] = \
+                str(prediction_info['prediction_date'])
+            response_data['starting_date'] = \
+                str(prediction_info['starting_date'])
 
             response_data['country_region_code'] = data['country_region_code']
-            response_data['prediction_new_cases'] = str(predicted)
-            response_data['prediction_date'] = str(last_day)
-            response_data['starting_date'] = start_avail_day
             response_data['trend'] = pred_trend
             response_data['success'] = True
+
         except Exception as e:
             abort(422)  # unprocessable entity
 
