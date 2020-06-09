@@ -231,9 +231,8 @@ def append_sample(array, predicted, look_back, requested_day):
     # next date
     date = datetime.strptime(requested_day, DATE_FORMAT)
     next_date = change_date(date, delta_days=1)
-    next_date_formatted = np.array(
-        [datetime.strftime(next_date, DATE_FORMAT)]
-    )
+    next_date_formatted = datetime.strftime(next_date, DATE_FORMAT)
+    next_date_formatted = np.array([next_date_formatted])
 
     # generate next sample
     selected = array[array[:, 0] == requested_day, 2:].reshape(look_back - 1, )
