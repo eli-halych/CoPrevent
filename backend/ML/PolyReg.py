@@ -11,9 +11,25 @@ BOOL_COND_ARRAY = []
 
 def get_trend_pred(united_samples):
     """
-        # TODO implement increasing/decreasing trend insight
-        features are dates
-        labels are values
+        Takes all samples appended with all prediction numbers
+            and prediction dates.
+
+            Dates are moved a day behind to match selected new cases values
+            since initially dates were corresponding to features, not
+            predictions.
+
+            Samples are filtered to start in 2020-04, when COVID-19 became the
+            global issue. A boolean array is used.
+
+            When dates match COVID-19 cases, polynimial regression is applied.
+
+            After a trend is defined, the last value on the trend line is
+            compared with the value at the # TODO look_back days behind.
+
+
+            :param      united_samples:         numpy.ndarray
+                        united_samples.shape:   (N, 4)
+            :return:                            str
     """
 
     features = united_samples[:, :1].astype(str)
@@ -52,6 +68,9 @@ def get_trend_pred(united_samples):
 
     ahead = trend_labels[-1:, 0]
     behind = trend_labels[-1 - 3:-3, 0]
+
+    print(type(united_samples))
+    print(united_samples.shape)
 
     if ahead > behind:
         return 'upward'
