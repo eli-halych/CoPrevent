@@ -104,7 +104,21 @@
         Tell us your weekly activities in the selected country
       </div>
       <!-- Select Country -->
-      <div class="selectedCountryImg" id="selectedCountryImg" style="width: 600px; height: 400px"></div>
+      <div class="selectedCountryImg" id="selected-country-img" style="width: 600px; height: 400px"></div>
+        <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js" charset="utf-8"></script>
+      <script>
+        $(function(){
+          $('#selected-country-img').vectorMap({
+          map: 'usa_en',
+          enableZoom: false,
+          showTooltip: true,
+          selectedColor: null,
+          hoverColor: null,
+          color: '#006491',
+          regionsSelectable: false
+        });
+        });
+      </script>
       <!-- Survey -->
       <div class="weeklyActivitySurvey">
         <h3>Lockdown start date</h3>
@@ -120,7 +134,7 @@
 
     <!-- Step3   -->
     <!-- Predict Data Title  -->
-    <h1>hello here is the step3</h1>
+    <!--<h1>hello here is the step3</h1>-->
     <script src="../static/js/world.js"></script>
     <!-- <script src="world.js"></script> -->
     <!-- <p class="instruction2">
