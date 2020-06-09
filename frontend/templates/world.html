@@ -20,7 +20,6 @@
     <script
       type="text/javascript"
       src="../static/dist/maps/jquery.vmap.world.js"
-      charset="utf-8"
     ></script>
     <script
       type="text/javascript"
@@ -39,7 +38,20 @@
           showTooltip: true,
           scaleColors: ["#C8EEFF", "#006491"],
           values: sample_data,
-          normalizeFunction: "polynomial"
+          normalizeFunction: "polynomial",
+          onRegionClick: function(element, code, region) {
+            var message =
+              'You clicked "' +
+              region +
+              '" which has the code: ' +
+              code.toUpperCase();
+            console.log(message);
+            //calling hidden step 2 survey
+            document.getElementById("navigateStep2").click();
+            var regionCode = code.toUpperCase();
+            console.log(typeof "regionCode");
+            checkRegionCode(regionCode);
+          }
         });
       });
     </script>
@@ -58,12 +70,14 @@
       <strong> 1. </strong>Please select a country by clicking to predict
       <br />COVID-19 flow with your own decision
     </p>
-    <!-- <img
-      class="titleImg"
-      src="../static/images/HackathonWebsiteTitle.png"
-      alt=""
-    /> -->
-    <button onclick="clickToShowStep2()">Navigate to Step 2</button>
+    <button
+      onclick="clickToShowStep2()"
+      id="navigateStep2"
+      style="visibility: hidden;"
+    >
+      Navigate to Step 2
+    </button>
+
     <a
       href="#UpdatingWeeklyActivities"
       id="anchorStep2"
@@ -104,17 +118,14 @@
         <input type="text" />
         <br />
         <br />
-        <br />
         <button>Submit</button>
       </div>
       <!-- end of the step2WholeSurvey div -->
     </div>
 
-    <br />
-    <br />
-    <br />
     <!-- Step3   -->
     <!-- Predict Data Title  -->
+    <h1>hello here is the step3</h1>
     <script src="world.js"></script>
     <!-- <script src="world.js"></script> -->
     <!-- <p class="instruction2">
