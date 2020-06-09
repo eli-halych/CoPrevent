@@ -3,6 +3,7 @@ import os
 from flask import Flask, request, abort, json, jsonify, render_template
 from werkzeug.exceptions import HTTPException
 
+from backend.ML.PolyReg import get_trend_pred
 from backend.ML.RNN import RNN
 
 template_dir = os.path.abspath('frontend/templates')
@@ -17,8 +18,14 @@ def create_app():
     @app.route('/survey', methods=['POST'])
     def post_survey():
         """
-            Send filled out survey form data
-            :return: prediction and filtered
+            Captures user's request for a prediction with a date,
+                a number of days to look forward
+                and a country code.
+
+            Returns a predicted number of new COVID-19 cases into the future,
+                and its trend direction.
+
+            :return: application/json
         """
 
         response_data = {}
@@ -33,15 +40,20 @@ def create_app():
                       look_forward=data['look_forward_days'])
 
             requested_day = data['requested_date']
-            start_avail_day, last_day, predicted = rnn.predict(requested_day)
-            pred_trend = rnn.get_trend(requested_day)
+            prediction_info, samples = rnn.predict(requested_day)
+            trend = get_trend_pred(samples, data['look_forward_days'])
+
+            response_data['prediction_new_cases'] = \
+                str(prediction_info['prediction_new_cases'])
+            response_data['prediction_date'] = \
+                str(prediction_info['prediction_date'])
+            response_data['starting_date'] = \
+                str(prediction_info['starting_date'])
 
             response_data['country_region_code'] = data['country_region_code']
-            response_data['prediction_new_cases'] = str(predicted)
-            response_data['prediction_date'] = str(last_day)
-            response_data['starting_date'] = start_avail_day
-            response_data['trend'] = pred_trend
+            response_data['trend'] = trend
             response_data['success'] = True
+
         except Exception as e:
             abort(422)  # unprocessable entity
 
