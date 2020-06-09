@@ -38,6 +38,9 @@ def get_trend_pred(starting_date, prediction_info, united_samples):
     numerical_dates = np.fromiter(generator, features.dtype)
     numerical_dates = numerical_dates.reshape(-1, 1).astype(float)
 
+    poly_features = PolynomialFeatures(degree=4)
+    features_transformed = poly_features.fit_transform(numerical_dates)
+
     trend = None
 
     return trend
