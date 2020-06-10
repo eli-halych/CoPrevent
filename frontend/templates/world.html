@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>CoPrevent Website: Social-Good Hackathon</title>
@@ -13,6 +12,7 @@
             type="text/css"
     />
 
+    <script src="../static/js/world.js"></script>
     <script
             type="text/javascript"
             src="https://code.jquery.com/jquery-1.11.3.min.js"
@@ -27,31 +27,67 @@
             type="text/javascript"
             src="../static/js/jquery.vmap.sampledata.js"
     ></script>
+    <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
+            charset="utf-8"></script>
 
     <script>
-        function getMapName(countryCode) {
-            let url = window.location.href.split("/");
-            let prot_host_port = url[0] + "//" + url[2];
 
-            fetch(prot_host_port + "/codes", {
-                method: 'GET'
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (jsonResponse) {
-                    let results = jsonResponse.results;
-                    for (var i = 1; i < results.length; i++) {
-                        if (results[i]['country_code'] === countryCode) {
-                            return results[i]['map_name'];
-                        }
+        $(function () {
+            $('form#predictionCasesTrendForm').on('submit', function (e) {
+                e.preventDefault();
+                let values = {};
+                $(this).find('input[type=text]').each(function () {
+                    let name = $(this).attr("name");
+                    values[name] = $(this).val();
+                });
+                $.ajax({
+                    type: 'post',
+                    url: '/survey',
+                    data: $(this).serialize(),
+                    success: function (response) {
+
+                        let url = window.location.href.split("/");
+                        let prot_host_port = url[0] + "//" + url[2];
+                        {#let countryName = 'world_en';#}
+                        let countryCode = values['country_region_code'];
+
+                        fetch(prot_host_port + "/codes", {
+                            method: 'GET'
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (jsonResponse) {
+                                let results = jsonResponse.results;
+                                for (var i = 1; i < results.length; i++) {
+                                    if (results[i]['country_code'] === countryCode) {
+                                        console.log(results[i]['map_name']);
+                                        var countryName = results[i]['map_name'].split("_")[0];
+                                        break;
+                                    }
+                                }
+
+                                let message = "Country name: " + countryName
+                                    + "\n\n"
+                                    + "For the requested date: " + values['requested_date'] + " "
+                                    + "the last available was: " + response['starting_date'] + "."
+                                    + "\n\n"
+                                    + "Looking " + values['look_forward_days'] + " day(s) forward, "
+                                    + "on " + response['prediction_date'] + " the amount of new cases "
+                                    + "will be " + response['prediction_new_cases'] + "."
+                                    + "\n\n"
+                                    + "The general trend within the prediction window is " + response['trend'] + ".";
+
+                                alert(message);
+
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
                     }
-                    /* if a requested country not supported in maps */
-                    return 'world_en';
-                })
-            .catch((error) => {console.log(error);});
-
-        }
+                });
+            });
+        });
 
         jQuery(document).ready(function () {
             jQuery("#vmap").vectorMap({
@@ -69,17 +105,28 @@
                 onRegionClick: function (element, code, region) {
                     var regionCode = code.toUpperCase();
 
+                    /* TODO remove if not used
                     var message =
                         'You clicked "' + region + '" which has the code: ' + regionCode;
-                    console.log(message, element);
+                    console.log(message, element);*/
 
                     //calling hidden step 2 survey
-                    document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
+                    // document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
                     document.getElementById("navigateStep2").click();
-                    checkRegionCode(regionCode);
-
-
+                    //checkRegionCode(regionCode);
                 }
+            });
+        });
+
+        $(function () {
+            $('#selectedCountryImg').vectorMap({
+                map: 'usa_en',
+                enableZoom: false,
+                showTooltip: true,
+                selectedColor: null,
+                hoverColor: null,
+                color: '#006491',
+                regionsSelectable: false
             });
         });
     </script>
@@ -132,44 +179,33 @@
     </p>
 
     <div class="step2Box">
-        Tell us your weekly activities in the selected country
+        Predict new COVID-19 cases in 3 days and see the trend!
     </div>
     <!-- Select Country -->
     <div class="selectedCountryImg" id="selectedCountryImg"
          style="width: 600px; height: 400px"></div>
-
-    <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
-            charset="utf-8"></script>
-    <script>
-        $(function () {
-            $('#selectedCountryImg').vectorMap({
-                map: 'usa_en',
-                enableZoom: false,
-                showTooltip: true,
-                selectedColor: null,
-                hoverColor: null,
-                color: '#006491',
-                regionsSelectable: false
-            });
-        });
-    </script>
     <!-- Survey -->
-    <div class="weeklyActivitySurvey">
-        <h3>Lockdown start date</h3>
-        <input type="text"/>
-        <h3>Lockdown end date</h3>
-        <input type="text"/>
-        <br/>
-        <br/>
-        <button>Submit</button>
+    <div class="predictionCasesTrendForm">
+        <form id="predictionCasesTrendForm">
+            <h3>Starting date</h3>
+            <input type="text" name="requested_date" placeholder="YYYY-mm-dd"/>
+            <h3>Prediction window</h3>
+            <input type="text" name="look_forward_days" placeholder="Enter 3"/>
+            <h3>Country</h3>
+            <input type="text" name="country_region_code"
+                   placeholder="Enter US"/>
+            <br/>
+            <br/>
+            <button type="submit" name="submit" id="submit">Submit</button>
+        </form>
     </div>
+
     <!-- end of the step2WholeSurvey div -->
 </div>
 
 <!-- Step3   -->
 <!-- Predict Data Title  -->
 <!--<h1>hello here is the step3</h1>-->
-<script src="../static/js/world.js"></script>
 <!-- <script src="world.js"></script> -->
 <!-- <p class="instruction2">
   Please select a country by clicking to predict
@@ -181,5 +217,10 @@
   <br />
   this is me again!
 </a> -->
+
+
+{#    <script>#}
+{#        #}
+{#    </script>#}
 </body>
 </html>
