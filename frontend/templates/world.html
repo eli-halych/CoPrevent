@@ -31,32 +31,6 @@
             charset="utf-8"></script>
 
     <script>
-        function getMapName(countryCode) {
-            let url = window.location.href.split("/");
-            let prot_host_port = url[0] + "//" + url[2];
-
-            fetch(prot_host_port + "/codes", {
-                method: 'GET'
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (jsonResponse) {
-                    let results = jsonResponse.results;
-                    for (var i = 1; i < results.length; i++) {
-                        if (results[i]['country_code'] === countryCode) {
-                            console.log(results[i]['map_name']);
-                            return results[i]['map_name'];
-                        }
-                    }
-                    /* if a requested country not supported in maps */
-                    return 'world_en';
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
-        }
 
         $(function () {
             $('form#predictionCasesTrendForm').on('submit', function (e) {
@@ -72,10 +46,28 @@
                     data: $(this).serialize(),
                     success: function (response) {
 
-                        let countryName = getMapName(values['country_region_code']);
-                        console.log(countryName);
+                        let url = window.location.href.split("/");
+                        let prot_host_port = url[0] + "//" + url[2];
+                        {#let countryName = 'world_en';#}
+                        let countryCode = values['country_region_code'];
 
-                        let message = "Country name: " + countryName + "."
+                        fetch(prot_host_port + "/codes", {
+                            method: 'GET'
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (jsonResponse) {
+                                let results = jsonResponse.results;
+                                for (var i = 1; i < results.length; i++) {
+                                    if (results[i]['country_code'] === countryCode) {
+                                        console.log(results[i]['map_name']);
+                                        var countryName = results[i]['map_name'].split("_")[0];
+                                        break;
+                                    }
+                                }
+
+                                let message = "Country name: " + countryName
                                     + "\n\n"
                                     + "For the requested date: " + values['requested_date'] + " "
                                     + "the last available was: " + response['starting_date'] + "."
@@ -86,7 +78,12 @@
                                     + "\n\n"
                                     + "The general trend within the prediction window is " + response['trend'] + ".";
 
-                        alert(message);
+                                alert(message);
+
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
                     }
                 });
             });
