@@ -9,18 +9,27 @@
 ### Errors
 ```
 400 - Bad Request
+404 - Not Found
 422 - Unprocessabel Enityt 
 ```
 
 ### Endpoints
 ```
-1. POST '/survey'
+1. GET '/'
+2. POST '/survey'
+3. GET '/codes'
 ```
 
 ##### Endpoint description
-
 ```
-1. POST '/survey'
+1. GET '/'
+DESCRIPTION: 
+    Loads and renders HTML/CSS/JS/image files from the frontend.
+RETURNS: 
+    A rendered world map from world.html.
+```
+```
+2. POST '/survey'
 ASSUMPTIONS:
     The time series is sorted.
 DESCRIPTION: 
@@ -41,6 +50,25 @@ RETURNS:
       "starting_date": "2020-06-01",
       "success": true,
       "trend": "downward"
+    }, 200
+```
+```
+3. GET '/codes'
+ASSUMPTIONS:
+    A file names countryCodesNames.txt  exists and can be loaded as CSV.
+DESCRIPTION: 
+    Loads a file with a delimiter (as if it was CSV) and returns a list
+    of dictionaries converted to JSON.
+HEADERS:
+  'Access-Control-Allow-Origin: *'
+RETURNS: 
+    {
+      'results': [
+                    {
+                        "country_code": "US",
+                        "map_name": "usa_en"
+                    }, 
+                    ...]
     }, 200
 ```
 

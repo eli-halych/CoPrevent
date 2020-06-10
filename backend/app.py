@@ -32,13 +32,16 @@ def create_app():
         except Exception as e:
             abort(404)  # not found
 
-        records = json.loads(df.to_json(orient='records'))
-        response = {
-            'results': records
-        }
+        try:
+            records = json.loads(df.to_json(orient='records'))
+            response = {
+                'results': records
+            }
 
-        response = jsonify(response)
-        response.headers.add('Access-Control-Allow-Origin', '*')
+            response = jsonify(response)
+            response.headers.add('Access-Control-Allow-Origin', '*')
+        except Exception as e:
+            abort(422)  # unprocessable entity
 
         return response
 
