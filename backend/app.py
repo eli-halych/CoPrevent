@@ -27,7 +27,10 @@ def create_app():
             :return: JSON
         """
 
-        df = pd.read_csv('backend/datasets/countryCodesNames.txt')
+        try:
+            df = pd.read_csv('backend/datasets/countryCodesNames.txt')
+        except Exception as e:
+            abort(404)  # not found
 
         records = json.loads(df.to_json(orient='records'))
         response = {
