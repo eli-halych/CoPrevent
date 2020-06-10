@@ -57,6 +57,25 @@
 
         }
 
+        $(function () {
+            $('form#predictionCasesTrendForm').on('submit', function (e) {
+                e.preventDefault();
+                let values = {};
+                $(this).find('input[type=text]').each(function () {
+                    let name = $(this).attr("name");
+                    values[name] = $(this).val();
+                });
+                $.ajax({
+                    type: 'post',
+                    url: '/survey',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        console.log(response);
+                    }
+                });
+            });
+        });
+
         jQuery(document).ready(function () {
             jQuery("#vmap").vectorMap({
                 map: "world_en",
@@ -153,7 +172,7 @@
          style="width: 600px; height: 400px"></div>
     <!-- Survey -->
     <div class="predictionCasesTrendForm">
-        <form method="post" action="/survey">
+        <form id="predictionCasesTrendForm">
             <h3>Starting date</h3>
             <input type="text" name="requested_date" placeholder="YYYY-mm-dd"/>
             <h3>Prediction window</h3>
@@ -163,7 +182,7 @@
                    placeholder="Enter US"/>
             <br/>
             <br/>
-            <button type="submit">Submit</button>
+            <button type="submit" name="submit" id="submit">Submit</button>
         </form>
     </div>
 
@@ -184,7 +203,6 @@
   <br />
   this is me again!
 </a> -->
-
 
 
 {#    <script>#}
