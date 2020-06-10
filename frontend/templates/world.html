@@ -45,6 +45,7 @@
                     let results = jsonResponse.results;
                     for (var i = 1; i < results.length; i++) {
                         if (results[i]['country_code'] === countryCode) {
+                            console.log(results[i]['map_name']);
                             return results[i]['map_name'];
                         }
                     }
@@ -70,7 +71,22 @@
                     url: '/survey',
                     data: $(this).serialize(),
                     success: function (response) {
-                        console.log(response);
+
+                        let countryName = getMapName(values['country_region_code']);
+                        console.log(countryName);
+
+                        let message = "Country name: " + countryName + "."
+                                    + "\n\n"
+                                    + "For the requested date: " + values['requested_date'] + " "
+                                    + "the last available was: " + response['starting_date'] + "."
+                                    + "\n\n"
+                                    + "Looking " + values['look_forward_days'] + " day(s) forward, "
+                                    + "on " + response['prediction_date'] + " the amount of new cases "
+                                    + "will be " + response['prediction_new_cases'] + "."
+                                    + "\n\n"
+                                    + "The general trend within the prediction window is " + response['trend'] + ".";
+
+                        alert(message);
                     }
                 });
             });
@@ -92,9 +108,10 @@
                 onRegionClick: function (element, code, region) {
                     var regionCode = code.toUpperCase();
 
+                    /* TODO remove if not used
                     var message =
                         'You clicked "' + region + '" which has the code: ' + regionCode;
-                    console.log(message, element);
+                    console.log(message, element);*/
 
                     //calling hidden step 2 survey
                     // document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
