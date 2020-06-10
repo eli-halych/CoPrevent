@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 from flask import Flask, request, abort, json, jsonify, render_template
 from werkzeug.exceptions import HTTPException
@@ -14,6 +15,21 @@ def create_app():
     app = Flask(__name__,
                 template_folder=template_dir,
                 static_folder=static_dir)
+
+    @app.route('/codes')
+    def get_country_names_codes():
+        print('here')
+        df = pd.read_csv('backend/datasets/countryCodesNames.txt')
+
+        records = json.loads(df.to_json(orient='records'))
+        response = {
+            'results': records
+        }
+
+        response = jsonify(response)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+        return response
 
     @app.route('/survey', methods=['POST'])
     def post_survey():

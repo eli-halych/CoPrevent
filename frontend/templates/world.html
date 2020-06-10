@@ -30,21 +30,27 @@
 
     <script>
         function getMapName(countryCode) {
-            var request = new XMLHttpRequest();
-            request.open("GET", "../static/data/countryCodesNames.txt", false);
-            request.send(null);
+            let url = window.location.href.split("/");
+            let prot_host_port = url[0] + "//" + url[2];
 
-            var jsonObject = request.responseText.split(/\r?\n|\r/);
+            fetch(prot_host_port + "/codes", {
+                method: 'GET'
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (jsonResponse) {
+                    let results = jsonResponse.results;
+                    for (var i = 1; i < results.length; i++) {
+                        if (results[i]['country_code'] === countryCode) {
+                            return results[i]['map_name'];
+                        }
+                    }
+                    /* if a requested country not supported in maps */
+                    return 'world_en';
+                })
+            .catch((error) => {console.log(error);});
 
-            for (var i = 1; i < jsonObject.length; i++) {
-
-                let code = jsonObject[i].split(',')[0];
-                let mapName = jsonObject[i].split(',')[1];
-
-                if (code === countryCode) {
-                    return mapName;
-                }
-            }
         }
 
         jQuery(document).ready(function () {
