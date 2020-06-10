@@ -60,10 +60,11 @@ def create_app():
 
         response_data = {}
 
-        if not request.data:
+        if len(request.form) == 0:
             abort(400)  # bad request
 
-        data = json.loads(request.data)
+        data = request.form.to_dict()
+        data['look_forward_days'] = int(data['look_forward_days'])
 
         try:
             rnn = RNN(country_code=data['country_region_code'],
