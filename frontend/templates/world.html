@@ -12,6 +12,7 @@
             type="text/css"
     />
 
+    <script src="../static/js/world.js"></script>
     <script
             type="text/javascript"
             src="https://code.jquery.com/jquery-1.11.3.min.js"
@@ -26,6 +27,8 @@
             type="text/javascript"
             src="../static/js/jquery.vmap.sampledata.js"
     ></script>
+    <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
+            charset="utf-8"></script>
 
     <script>
         function getMapName(countryCode) {
@@ -48,7 +51,9 @@
                     /* if a requested country not supported in maps */
                     return 'world_en';
                 })
-            .catch((error) => {console.log(error);});
+                .catch((error) => {
+                    console.log(error);
+                });
 
         }
 
@@ -73,12 +78,22 @@
                     console.log(message, element);
 
                     //calling hidden step 2 survey
-                    document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
+                    // document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
                     document.getElementById("navigateStep2").click();
-                    checkRegionCode(regionCode);
-
-
+                    //checkRegionCode(regionCode);
                 }
+            });
+        });
+
+        $(function () {
+            $('#selectedCountryImg').vectorMap({
+                map: 'usa_en',
+                enableZoom: false,
+                showTooltip: true,
+                selectedColor: null,
+                hoverColor: null,
+                color: '#006491',
+                regionsSelectable: false
             });
         });
     </script>
@@ -136,22 +151,6 @@
     <!-- Select Country -->
     <div class="selectedCountryImg" id="selectedCountryImg"
          style="width: 600px; height: 400px"></div>
-
-    <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
-            charset="utf-8"></script>
-    <script>
-        $(function () {
-            $('#selectedCountryImg').vectorMap({
-                map: 'usa_en',
-                enableZoom: false,
-                showTooltip: true,
-                selectedColor: null,
-                hoverColor: null,
-                color: '#006491',
-                regionsSelectable: false
-            });
-        });
-    </script>
     <!-- Survey -->
     <div class="predictionCasesTrendForm">
         <form method="post" action="/survey">
@@ -160,7 +159,8 @@
             <h3>Prediction window</h3>
             <input type="text" name="look_forward_days" placeholder="Enter 3"/>
             <h3>Country</h3>
-            <input type="text" name="country_region_code" placeholder="Enter US"/>
+            <input type="text" name="country_region_code"
+                   placeholder="Enter US"/>
             <br/>
             <br/>
             <button type="submit">Submit</button>
@@ -173,7 +173,6 @@
 <!-- Step3   -->
 <!-- Predict Data Title  -->
 <!--<h1>hello here is the step3</h1>-->
-<script src="../static/js/world.js"></script>
 <!-- <script src="world.js"></script> -->
 <!-- <p class="instruction2">
   Please select a country by clicking to predict
@@ -185,5 +184,11 @@
   <br />
   this is me again!
 </a> -->
+
+
+
+{#    <script>#}
+{#        #}
+{#    </script>#}
 </body>
 </html>
