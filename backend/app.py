@@ -18,7 +18,15 @@ def create_app():
 
     @app.route('/codes')
     def get_country_names_codes():
-        print('here')
+        """
+            Loads a file to be served in JS in the frontend.
+
+            Contains Access-Control-Allow-Origin, because otherwise
+                requests are blocked by the frontend.
+
+            :return: JSON
+        """
+
         df = pd.read_csv('backend/datasets/countryCodesNames.txt')
 
         records = json.loads(df.to_json(orient='records'))
