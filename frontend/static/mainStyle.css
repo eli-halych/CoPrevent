@@ -3,6 +3,26 @@ body {
   background-repeat: no-repeat;
 }
 
+.graph {
+  position: absolute;
+  display: block;
+  left: 5px;
+  top: 5px;
+  width: 800px;
+  height: 800px;
+  overflow: auto;
+}
+
+#stats {
+  font-family: Ariel;
+  font-size: 5em;
+  color: Black;
+  font-weight: bolder;
+  /* position: absolute; */
+}
+
+
+
 .BGimage {
   width: 100%;
   margin-top: -920px;
