@@ -3,23 +3,28 @@ body {
   background-repeat: no-repeat;
 }
 
-.graph {
+
+#graph {
   position: absolute;
   display: block;
   left: 5px;
-  top: 5px;
-  width: 800px;
+  margin-top: 20000px;
+  width: 1100px;
   height: 800px;
   overflow: auto;
 }
 
+
+
 #stats {
   font-family: Ariel;
-  font-size: 5em;
+  height: 100px;
+
   color: Black;
   font-weight: bolder;
-  /* position: absolute; */
+  position: absolute;
 }
+
 
 
 
