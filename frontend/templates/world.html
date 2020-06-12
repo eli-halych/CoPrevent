@@ -30,6 +30,22 @@
     <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
             charset="utf-8"></script>
 
+
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.1.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.0.1.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.0.1.min.js"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.2.min.js"
+            integrity="sha384-ufR9RFnRs6lniiaFvtJziE0YeidtAgBRH6ux2oUItHw5WTvE1zuk9uzhUU/FJXDp"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        Bokeh.set_log_level("info");
+    </script>
+
+
     <script>
 
         $(function () {
@@ -101,19 +117,9 @@
                 scaleColors: ["#C8EEFF", "#006491"],
                 values: sample_data,
                 normalizeFunction: "polynomial",
-                //get regionCode
                 onRegionClick: function (element, code, region) {
-                    var regionCode = code.toUpperCase();
-
-                    /* TODO remove if not used
-                    var message =
-                        'You clicked "' + region + '" which has the code: ' + regionCode;
-                    console.log(message, element);*/
-
-                    //calling hidden step 2 survey
-                    // document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
                     document.getElementById("navigateStep2").click();
-                    //checkRegionCode(regionCode);
+
                 }
             });
         });
@@ -130,7 +136,15 @@
             });
         });
     </script>
+
+
     <link rel="stylesheet" href="../static/mainStyle.css"/>
+
+    <style>
+        div.scrollable {
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
 <div id="vmap"></div>
@@ -163,13 +177,14 @@
 <!-- Step2 -->
 <a name="UpdatingWeeklyActivities"></a>
 <!-- step 2 Anchor -->
-<div id="step2WholeSurvey" style="display: none;">
+
+<div id="step2WholeSurvey" style="visibility: hidden; overflow: hidden; height: 0; width: 100%; display: block;">
     <img
             class="titleWeeklyActivities"
             src="../static/images/HackathonWeeklyActivities.png"
             alt=""
     />
-    <p class="instruction2">
+    <p class="instruction">
         <strong>
             2.
         </strong>
@@ -178,12 +193,12 @@
         and choose wisely for better preventing COVID-19 flow
     </p>
 
-    <div class="step2Box">
+    <div class="section-title-box">
         Predict new COVID-19 cases in 3 days and see the trend!
     </div>
     <!-- Select Country -->
-    <div class="selectedCountryImg" id="selectedCountryImg"
-         style="width: 600px; height: 400px"></div>
+    <div class="selectedCountryImg" id="selectedCountryImg"></div>
+
     <!-- Survey -->
     <div class="predictionCasesTrendForm">
         <form id="predictionCasesTrendForm">
@@ -199,28 +214,18 @@
             <button type="submit" name="submit" id="submit">Submit</button>
         </form>
     </div>
-
     <!-- end of the step2WholeSurvey div -->
 </div>
-
-<!-- Step3   -->
-<!-- Predict Data Title  -->
-<!--<h1>hello here is the step3</h1>-->
-<!-- <script src="world.js"></script> -->
-<!-- <p class="instruction2">
-  Please select a country by clicking to predict
-  <br />
-  the COVID-19 flow with your own decision
-</p> -->
-<!-- <a href="#predictData">
-  Hello, plese see me
-  <br />
-  this is me again!
-</a> -->
+<div id="graph">
+    <div class="section-title-box">
+        Compare changes in residential searches during the lockdown!
+    </div>
+    <div class="widget">
+        {{ script|indent(4)|safe }}
+    </div>
 
 
-{#    <script>#}
-{#        #}
-{#    </script>#}
+</div>
+
 </body>
 </html>
