@@ -189,7 +189,7 @@
 <a name="UpdatingWeeklyActivities"></a>
 <!-- step 2 Anchor -->
 
-<div id="step2WholeSurvey" style="display: none;">
+<div id="step2WholeSurvey" style="display: none; width: 100%;">
     <img
             class="titleWeeklyActivities"
             src="../static/images/HackathonWeeklyActivities.png"
@@ -229,12 +229,14 @@
     <!-- end of the step2WholeSurvey div -->
 </div>
 <div id="graph">
-
     <div class="section-title-box">
         Compare changes in residential searches during the lockdown!
     </div>
+    <div class="widget">
+        {{ script|indent(4)|safe }}
+    </div>
 
-    {{ script|indent(4)|safe }}
+
 </div>
 
 </body>
