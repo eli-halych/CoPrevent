@@ -117,19 +117,9 @@
                 scaleColors: ["#C8EEFF", "#006491"],
                 values: sample_data,
                 normalizeFunction: "polynomial",
-                //get regionCode
                 onRegionClick: function (element, code, region) {
-                    var regionCode = code.toUpperCase();
-
-                    /* TODO remove if not used
-                    var message =
-                        'You clicked "' + region + '" which has the code: ' + regionCode;
-                    console.log(message, element);*/
-
-                    //calling hidden step 2 survey
-                    // document.getElementById("selectedCountryImg").setAttribute('map-name', getMapName(regionCode)); // FIXME
                     document.getElementById("navigateStep2").click();
-                    //checkRegionCode(regionCode);
+
                 }
             });
         });
