@@ -1,3 +1,3 @@
-web: bokeh serve --port=$PORT --allow-websocket-origin=social-good-hackathon.herokuapp.com --address=0.0.0.0 --use-xheaders backend/main.py
+web: bokeh serve --port=5006  backend/main.py
 web: gunicorn --pythonpath backend app:app
 
