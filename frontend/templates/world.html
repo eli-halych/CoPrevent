@@ -32,18 +32,18 @@
 
 
     <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.1.min.js"
-        crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
     <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.0.1.min.js"
-        crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
     <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.0.1.min.js"
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.2.min.js" integrity="sha384-ufR9RFnRs6lniiaFvtJziE0YeidtAgBRH6ux2oUItHw5WTvE1zuk9uzhUU/FJXDp" crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.2.min.js"
+            integrity="sha384-ufR9RFnRs6lniiaFvtJziE0YeidtAgBRH6ux2oUItHw5WTvE1zuk9uzhUU/FJXDp"
+            crossorigin="anonymous"></script>
     <script type="text/javascript">
-            Bokeh.set_log_level("info");
+        Bokeh.set_log_level("info");
     </script>
-
-
-
 
 
     <script>
@@ -148,14 +148,13 @@
     </script>
 
 
-
     <link rel="stylesheet" href="../static/mainStyle.css"/>
 
     <style>
         div.scrollable {
             overflow: auto;
 
-            }
+        }
     </style>
 </head>
 <body>
@@ -189,13 +188,14 @@
 <!-- Step2 -->
 <a name="UpdatingWeeklyActivities"></a>
 <!-- step 2 Anchor -->
+
 <div id="step2WholeSurvey" style="display: none;">
     <img
             class="titleWeeklyActivities"
             src="../static/images/HackathonWeeklyActivities.png"
             alt=""
     />
-    <p class="instruction2">
+    <p class="instruction">
         <strong>
             2.
         </strong>
@@ -210,6 +210,7 @@
     <!-- Select Country -->
     <div class="selectedCountryImg" id="selectedCountryImg"
          style="width: 600px; height: 400px"></div>
+
     <!-- Survey -->
     <div class="predictionCasesTrendForm">
         <form id="predictionCasesTrendForm">
@@ -225,37 +226,16 @@
             <button type="submit" name="submit" id="submit">Submit</button>
         </form>
     </div>
-
     <!-- end of the step2WholeSurvey div -->
 </div>
+<div id="graph">
 
-    <!--<div id = "stats">
-        <p>
-            With our analysis we found, as soon as lockdown started there was a worldwide trend to travel to a friend or relatives house.
-        </p>
-    </div>-->
-    <div id = "graph">
-        {{script|indent(4)|safe}}
+    <div class="step2Box">
+        Compare changes in residential searches during the lockdown!
     </div>
 
-<!-- Step3   -->
-<!-- Predict Data Title  -->
-<!--<h1>hello here is the step3</h1>-->
-<!-- <script src="world.js"></script> -->
-<!-- <p class="instruction2">
-  Please select a country by clicking to predict
-  <br />
-  the COVID-19 flow with your own decision
-</p> -->
-<!-- <a href="#predictData">
-  Hello, plese see me
-  <br />
-  this is me again!
-</a> -->
+    {{ script|indent(4)|safe }}
+</div>
 
-
-{#    <script>#}
-{#        #}
-{#    </script>#}
 </body>
 </html>
