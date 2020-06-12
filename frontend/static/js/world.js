@@ -1,9 +1,13 @@
 function clickToShowStep2() {
   var x = document.getElementById("step2WholeSurvey");
-  if (x.style.display === "none") {
-    x.style.display = "block";
+  if (x.style.visibility === "hidden") {
+    x.style.visibility = "visible";
+    x.style.overflow = "auto";
+    x.style.height = "100%";
   } else {
-    x.style.display = "none";
+    x.style.visibility = "hidden";
+    x.style.overflow = "hidden";
+    x.style.height = "0";
   }
   //calling step2 anchor
   document.getElementById("anchorStep2").click();
