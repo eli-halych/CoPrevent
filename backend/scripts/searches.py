@@ -96,7 +96,7 @@ def searches_tab(countries):
 		new_src = make_dataset(country_to_plot,
 									range_start = range_select.value[0],
 									range_end = range_select.value[1],
-									bandwidth = bandwidth,
+									bandwidth = bandwidth
 							   		)
 		
 		src.data.update(new_src.data)
