@@ -97,7 +97,7 @@ def searches_tab(countries):
 									range_start = range_select.value[0],
 									range_end = range_select.value[1],
 									bandwidth = bandwidth,
-							   		height=700)
+							   		)
 		
 		src.data.update(new_src.data)
 		
