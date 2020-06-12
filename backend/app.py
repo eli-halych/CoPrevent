@@ -94,13 +94,14 @@ def create_app():
         return jsonify(response_data)
 
     @app.route('/')
-    # def present():
-    #    return render_template("world.html")
-    def dkapp_page():
-        session = pull_session(url="http://localhost:5006/main")
-        script = server_session(None, session.id,
-                                url='http://localhost:5006/main')
-        return render_template("world.html", script=script, template="Flask")
+    def present():
+        return render_template("world.html")
+
+    # def dkapp_page():
+    #     session = pull_session(url="http://localhost:5006/main")
+    #     script = server_session(None, session.id,
+    #                             url='http://localhost:5006/main')
+    #     return render_template("world.html", script=script, template="Flask")
 
     @app.errorhandler(HTTPException)
     def handle_exception(e):
