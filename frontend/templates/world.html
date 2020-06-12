@@ -30,6 +30,22 @@
     <script type="text/javascript" src="../static/dist/maps/jquery.vmap.usa.js"
             charset="utf-8"></script>
 
+
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.1.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.0.1.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.0.1.min.js"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.2.min.js" integrity="sha384-ufR9RFnRs6lniiaFvtJziE0YeidtAgBRH6ux2oUItHw5WTvE1zuk9uzhUU/FJXDp" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+            Bokeh.set_log_level("info");
+    </script>
+
+
+
+
+
     <script>
 
         $(function () {
@@ -130,7 +146,17 @@
             });
         });
     </script>
+
+
+
     <link rel="stylesheet" href="../static/mainStyle.css"/>
+
+    <style>
+        div.scrollable {
+            overflow: auto;
+
+            }
+    </style>
 </head>
 <body>
 <div id="vmap"></div>
@@ -202,6 +228,15 @@
 
     <!-- end of the step2WholeSurvey div -->
 </div>
+
+    <div id = "stats">
+        <p>
+            With our analysis we found, as soon as lockdown started there was a worldwide trend to travel to a friend or relatives house.
+        </p>
+    </div>
+    <div class = "graph">
+        {{script|indent(4)|safe}}
+    </div>
 
 <!-- Step3   -->
 <!-- Predict Data Title  -->

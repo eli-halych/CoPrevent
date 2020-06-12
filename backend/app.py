@@ -4,11 +4,20 @@ import pandas as pd
 from flask import Flask, request, abort, json, jsonify, render_template
 from werkzeug.exceptions import HTTPException
 
+
+
+
 from backend.ML.PolyReg import get_trend_pred
 from backend.ML.RNN import RNN
 
-template_dir = os.path.abspath('frontend/templates')
-static_dir = os.path.abspath('frontend/static')
+
+from bokeh.client import pull_session
+from bokeh.embed import server_session
+
+
+
+template_dir = os.path.abspath('Social-Good-Hackathon/frontend/templates')
+static_dir = os.path.abspath('Social-Good-Hackathon/frontend/static')
 
 
 def create_app():
@@ -91,8 +100,12 @@ def create_app():
         return jsonify(response_data)
 
     @app.route('/')
-    def present():
-        return render_template("world.html")
+    #def present():
+    #    return render_template("world.html")
+    def dkapp_page():
+        session = pull_session(url="http://localhost:5006/main")
+        script = server_session(None, session.id, url='http://localhost:5006/main')
+        return render_template("world.html", script=script, template="Flask")
 
     @app.errorhandler(HTTPException)
     def handle_exception(e):
