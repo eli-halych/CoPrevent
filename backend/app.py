@@ -97,9 +97,9 @@ def create_app():
     # def present():
     #     return render_template("world.html")
     def dkapp_page():
-        session = pull_session(url="http://localhost:5006/main")
+        session = pull_session(url="https://coprevent-bokeh.herokuapp.com/main")
         script = server_session(None, session.id,
-                                url='http://localhost:5006/main')
+                                url='https://coprevent-bokeh.herokuapp.com/main')
         return render_template("world.html", script=script, template="Flask")
 
     @app.errorhandler(HTTPException)
